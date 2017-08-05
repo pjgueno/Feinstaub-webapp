@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet-src.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+<script src="data/positions.js"></script>   
+<script src="hexbin.js"></script>
+</head>
+        
+<body ng-app="feinstaub">
+            
+
+
+<div id = 'header' layout="column" layout-sm="row"  >
+  <div layout="row" layout-wrap flex>
+      
+<div id ='title' flex="100" ng-cloak>
+      <img id ='logo' src="images/logo.png">
+    Welcome to myAirRohrApp!
+    
+      </div>
+<div id='presentation' flex="100"> 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    <a target="_blank" href="http://luftdaten.info">LUFTDATEN.INFO</a>
+    
+</div>      
+  <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="35" ng-cloak>
+<md-content class="md-padding">
+    <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Meine Stadt</md-button>
+  </md-content>
+      </div>
+  <div id = 'middle' flex="30">
+  </div>
+  <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="35" ng-cloak>
+<md-content class="md-padding">
+    <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Mein Sensor</md-button>
+  </md-content>
+      </div>
+<div id ='info' flex="100">
+    GRAPH ETC Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+      
+      
+      
+</div>
+
+    </div>
+  <div id = 'map' flex>
+  </div>
+</div>
+
+
+    
+    
+  
+<script>
+    
+    var texte;
+    
+    var hmhexa;
+    
+        
+    var dataPM;
+    var selector = "hmPM10";
+    var hexahmtest = false;
+    var arraySensors = [];
+    
+    var map;
+
+
+    
+    window.onload=function(){
+        
+        
+        map = L.map('map').setView([48.8, 9.2 ], 6);
+        map.options.minZoom = 2;
+
+
+    tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
+				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+				maxZoom: 18}).addTo(map);
+    
+    d3.json("https://api.luftdaten.info/static/v2/data.dust.min.json", function(error, data) {
+    dataPM = data;
+    makeHexagonmap(dataPM);
+    });
+        
+
+        
+        map.on('moveend', function() { 
+    if(hexahmtest == true){hexagonheatmap._zoomChange();};    
+
+});
+    
+
+map.on('zoomend', function() {
+if(hexahmtest == true){hexagonheatmap._zoomChange();};    
+});
+        
+        
+        
+        
+    };
+    
+function makeHexagonmap(data){
+    
+         hmhexa = [];      
+
+            data.forEach(function(item){
+            
+               var objecthexa ={"data":{"PM10": getRightValue(item.sensordatavalues,"P1") , "PM25": getRightValue(item.sensordatavalues,"P1")}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
+                
+                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude};
+                                
+            hmhexa.push(objecthexa); 
+            arraySensors.push(objectsensor);
+
+            });
+    
+    console.log(hmhexa);
+    console.log(arraySensors);
+
+    
+    
+    var options = {
+                valueDomain: [20, 40, 60, 100, 500],
+                colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
+                };
+    
+    
+    if(selector == "hmPM10"){
+                                 
+                if(hexahmtest == false){
+                    hexahmtest = true;
+                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
+                    hexagonheatmap.data(hmhexa);
+                }else{
+                hexagonheatmap.initialize(options);
+                hexagonheatmap.data(hmhexa);         
+                hexagonheatmap._redraw();
+                };
+            };   
+             
+};
+    
+    
+    
+
+    
+    
+    
+    
+    
+    function getRightValue(array,type){
+    var value;
+    array.forEach(function(item){  
+       if (item.value_type == type){value = item.value;};       
+    });        
+    return value;
+};
+    
+    
+    function interpolColor(a, b, amount) { 
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace(/#/g, ''), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+};
+
+function colorpm(val){   
+    
+         
+      var col= parseInt(val);
+        if(val>= 0 && val < 25){ return "#00796b";};
+        if(val>= 25 && val < 50){
+        var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
+        return couleur;
+        };
+        if(val>= 50 && val < 75){
+        var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
+        return couleur;
+        };
+        if(val>= 75 && val < 100){
+        var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
+        return couleur;
+        };
+        if(val>=100 && val < 500){
+        var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
+        return couleur;
+        };
+        if(val>=100 && val < 500){ return "#8c0084";};       
+  
+};
+    
+
+
+
+    
+    
+    </script>
+    
+    
+    
+    
+    
+    
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script> 
+    
+<script type="text/javascript" src="appcomponents.js"></script> 
+   
+            
+      
+</body>
+</html>
+
