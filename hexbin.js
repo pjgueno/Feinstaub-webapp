@@ -20,6 +20,7 @@ L.HexbinLayer = L.Layer.extend({
             if (selector == "hmPM2.5"){return d3.mean(d, (o) => o.o.data.PM25)} 
             if (selector == "hmtemp"){return d3.mean(d, (o) => o.o.data.Temp)} 
             if (selector == "hmhumi"){return d3.mean(d, (o) => o.o.data.Humi)} 
+            if (selector == "hmdruck"){return d3.mean(d, (o) => o.o.data.Press)} 
 		}
 	},
 

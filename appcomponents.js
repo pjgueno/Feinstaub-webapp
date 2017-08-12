@@ -37,16 +37,6 @@
     var mean = getMeans(map);
         
     console.log(mean);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
     };
 
     function querySearch (query) {
@@ -166,9 +156,13 @@ function getMeans(map){
     
     var arrayPM10 = [];
     var arrayPM25 = [];
+    var arrayTemp = [];
+    var arrayHumi = [];
+    var arrayDruck = [];
+
     
     
-    var inbounds = hmhexa.filter(function(item){
+    var inboundsPM = hmhexaPM.filter(function(item){
         
         var position = new L.LatLng(item.latitude, item.longitude);
         
@@ -177,33 +171,84 @@ function getMeans(map){
             return item;
             
         };    
-    };
+    });
+    
+    
+     var inboundstemp = hmhexatemp.filter(function(item){
+        
+        var position = new L.LatLng(item.latitude, item.longitude);
+        
+        if (bbox.contains(position) == true){
+            
+            return item;
+            
+        };    
+    });
+    
+    
+     var inboundsdruck = hmhexadruck.filter(function(item){
+        
+        var position = new L.LatLng(item.latitude, item.longitude);
+        
+        if (bbox.contains(position) == true){
+            
+            return item;
+            
+        };    
+    });
+    
+    
+
+    console.log(inboundsPM);
+    console.log(inboundstemp);
+    console.log(inboundsdruck);
+
+    
+    
+       inboundsPM.forEach(function (item) {
+           arrayPM10.push(parseFloat(item.data.PM10));
+           arrayPM25.push(parseFloat(item.data.PM25));
+       }); 
+    
+      inboundsPM.forEach(function (item) {
+        arrayTemp.push(parseFloat(item.data.Temp));
+        arrayHumi.push(parseFloat(item.data.Humi));
+       }); 
+    
+     inboundsdruck.forEach(function (item) {
+           arrayDruck.push(parseFloat(item.data.Press));   
+       }); 
+        
+     var meanPM10 = parseInt((arrayPM10.reduce(function(sum, value) {return sum + value;}, 0))/arrayPM10.length);
+     var minPM10 = Math.min(...arrayPM10);
+    var maxPM10 = Math.max(...arrayPM10);
+
+    var meanPM25 = parseInt((arrayPM25.reduce(function(sum, value) {return sum + value;}, 0))/arrayPM25.length);
+    var minPM25 = Math.min(...arrayPM25);
+    var maxPM25 = Math.max(...arrayPM25);
+    
+    var meanTemp = parseInt((arrayTemp.reduce(function(sum, value) {return sum + value;}, 0))/arrayTemp.length);
+    var minTemp = Math.min(...arrayTemp);
+    var maxTemp = Math.max(...arrayTemp);
+    
+    
+    var meanHumi = parseInt((arrayHumi.reduce(function(sum, value) {return sum + value;}, 0))/arrayHumi.length);
+    var minHumi = Math.min(...arrayHumi);
+    var maxHumi = Math.max(...arrayHumi);
+    
+    var meanDruck = parseInt((arrayDruck.reduce(function(sum, value) {return sum + value;}, 0))/arrayDruck.length);
+    var minDruck = Math.min(...arrayDruck);
+    var maxDruck = Math.max(...arrayDruck);
+    
+    
+    console.log(meanPM10);
+    console.log(minPM10);
+    console.log(maxPM10);
 
     
     
     
-    
-
-    map.eachLayer(function (layer) {
-    if (layer._latlng!=undefined){
-    if(bbox.contains(layer._latlng)  ){
-        if(layer.feature.properties.hasOwnProperty('PM10')){
-        if ( layer.feature.properties.PM10!= undefined ){
-            arrayPM10.push(parseFloat(layer.feature.properties.PM10))
-        };};
-        if(layer.feature.properties.hasOwnProperty('PM25')){
-        if (layer.feature.properties.PM25!= undefined){
-            arrayPM25.push(parseFloat(layer.feature.properties.PM25))
-        };};  
-    };
-    };
-});
-    
-     meanPM10 = parseInt((arrayPM10.reduce(function(sum, value) {return sum + value;}, 0))/arrayPM10.length);
-     meanPM25 = parseInt((arrayPM25.reduce(function(sum, value) {return sum + value;}, 0))/arrayPM25.length);
-    
-//    if(selector == "PM10" || selector == "hmPM10"){document.getElementById('meanwert').innerHTML = meanPM10 +" &micro;g/m&sup3";};
-//    if(selector == "PM2.5" ||selector == "hmPM2.5"){document.getElementById('meanwert').innerHTML = meanPM25 +" &micro;g/m&sup3";};
+    return 4;
 };
 
 

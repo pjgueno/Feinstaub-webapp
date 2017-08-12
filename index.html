@@ -16,7 +16,7 @@
             
 
 
-<div id = 'header' layout="column" layout-sm="row"  >
+<div id = 'header' layout="column" layout-sm="row" layout-gt-sm ="row" layout-md="row" layout-gt-md="row" >
   <div layout="row" layout-wrap flex>
       
 <div id ='title' flex="100" ng-cloak>
@@ -43,14 +43,46 @@
       </div>
 <div id ='info' flex="100">
     GRAPH ETC Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    
       
       
       
 </div>
+      
+<div class ='controls' flex="20">
+    <button class="selec" id="hmPM10" value="hmPM10" onclick="reload(this.value)">PM10</button>
 
     </div>
-  <div id = 'map' flex>
-  </div>
+
+      <div class ='controls' flex="20">
+    <button class="selec" id="hmPM2.5" value="hmPM2.5" onclick="reload(this.value)">PM2.5</button>
+
+    </div>
+      
+      <div class ='controls' flex="20">
+    <button class="selec" id="hmtemp" value="hmtemp" onclick="reload(this.value)">Temp.</button> 
+
+    </div>
+      
+      <div class ='controls' flex="20">
+    <button class="selec" id="hmhumi" value="hmhumi" onclick="reload(this.value)">Feucht.</button>
+
+    </div>
+      
+      <div class ='controls' flex="20">
+    <button class="selec" id="hmdruck" value="hmdruck" onclick="reload(this.value)">Druck</button>
+
+    </div>
+    
+    
+
+    
+    
+    
+
+    </div>
+  <div id = 'map' flex></div>
+ 
 </div>
 
 
@@ -60,16 +92,19 @@
 <script>
     
     var texte;
+    var hmhexaPM =[];
+    var hmhexatemp =[];
+    var hmhexadruck =[];
     
-    var hmhexa;
-    
-        
-    var dataPM;
+    var map;
+    var tiles;
+
+
     var selector = "hmPM10";
     var hexahmtest = false;
     var arraySensors = [];
-    
-    var map;
+    var arraySensorsDruck = [];
+
 
 
     
@@ -83,14 +118,14 @@
     tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
 				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
 				maxZoom: 18}).addTo(map);
-    
-    d3.json("https://api.luftdaten.info/static/v2/data.dust.min.json", function(error, data) {
-    dataPM = data;
-    makeHexagonmap(dataPM);
-    });
         
-
         
+       d3.queue()
+    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
+    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+    .awaitAll(ready); 
+           
+ 
         map.on('moveend', function() { 
     if(hexahmtest == true){hexagonheatmap._zoomChange();};    
 
@@ -101,56 +136,210 @@ map.on('zoomend', function() {
 if(hexahmtest == true){hexagonheatmap._zoomChange();};    
 });
         
-        
+      
         
         
     };
     
-function makeHexagonmap(data){
     
-         hmhexa = [];      
-
-            data.forEach(function(item){
+    
+  function ready(error,data) {
+  if (error) throw error;
+     
+     
+         data[0].forEach(function(item){
             
-               var objecthexa ={"data":{"PM10": getRightValue(item.sensordatavalues,"P1") , "PM25": getRightValue(item.sensordatavalues,"P1")}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
+               var objecthexa ={"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
                 
-                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude};
+                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"PM"};
                                 
-            hmhexa.push(objecthexa); 
+            hmhexaPM.push(objecthexa); 
             arraySensors.push(objectsensor);
+            arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
 
             });
-    
-    console.log(hmhexa);
-    console.log(arraySensors);
+     
+     
+     
+     data[1].forEach(function(item){
+            
+               var objecthexa ={"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature")) , "Humi": parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
+                
+                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"TH"};
+                                
+            hmhexatemp.push(objecthexa);
+            arraySensors.push(objectsensor);
+            arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
 
+            });
+      
+      
+      
+      data[1].forEach(function(item){
+            
+          
+          if(item.sensordatavalues.length == 3){
+              
+               var objecthexa ={"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
+              
+              var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"P"};
+                          
+              hmhexadruck.push(objecthexa);
+              arraySensorsDruck.push(objectsensor);
+            arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );       
+          };
+            });
+      
+      
+      
+      
+     
+//     console.log(hmhexaPM);
+//    console.log(arraySensors);
+//         console.log(hmhexadruck);
+//          console.log(arraySensorsDruck);
+
+
+
+     makeHexagonmap(hmhexaPM);
+        
+ };      
+    
+    
+        
+function makeHexagonmap(data){
+
+    
+    
+    if(selector == "hmPM10" || selector == "hmPM2.5" ){
     
     
     var options = {
                 valueDomain: [20, 40, 60, 100, 500],
                 colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
                 };
-    
-    
-    if(selector == "hmPM10"){
-                                 
-                if(hexahmtest == false){
-                    hexahmtest = true;
+        
+        
+           hexahmtest = true;
                     hexagonheatmap = L.hexbinLayer(options).addTo(map);
-                    hexagonheatmap.data(hmhexa);
-                }else{
-                hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexa);         
-                hexagonheatmap._redraw();
-                };
-            };   
-             
+                    hexagonheatmap.data(hmhexaPM); 
+
+    };
+    
+
+        if(selector == "hmtemp" ){
+
+    
+     var options = {
+                valueDomain: [-20, 0, 50],
+                colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
+            };
+            
+               hexahmtest = true;
+                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
+                    hexagonheatmap.data(hmhexatemp); 
+    
+    
+        };
+    
+    
+            if(selector == "hmhumi" ){
+
+            var options = {
+                valueDomain: [0,100],
+		      colorRange: ['#FFFFFF', '#0000FF']	
+            };
+    
+               hexahmtest = true;
+                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
+                    hexagonheatmap.data(hmhexatemp); 
+                
+            };
+    
+    
+                  
+    
+    
+    
+    
+    
+     if(selector == "hmdruck" ){
+
+            var options = {
+               valueDomain: [90000, 101300, 110000],
+                colorRange: ['#FF0000', '#FE9E01', '#00796B']	
+            };
+         
+            hexahmtest = true;
+                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
+                    hexagonheatmap.data(hmhexadruck); 
+    
+            };
+    
+
+                   
+
 };
     
     
     
 
+        function reload(val){
+                        
+            selector = val;
     
+            if(selector == "hmPM10" || selector == "hmPM2.5" ){
+            var options = {
+            valueDomain: [20, 40, 60, 100, 500],
+            colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
+            };
+                
+                
+                 hexagonheatmap.initialize(options);
+                hexagonheatmap.data(hmhexaPM);         
+                
+            };
+    
+        if(selector == "hmtemp" ){
+        var options = {
+                valueDomain: [-20, 0, 50],
+                colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
+            };
+            
+             hexagonheatmap.initialize(options);
+                hexagonheatmap.data(hmhexatemp);         
+            
+            
+        };
+    
+        if(selector == "hmhumi" ){
+            var options = {
+                valueDomain: [0,100],
+		      colorRange: ['#FFFFFF', '#0000FF']	
+            };
+            
+             hexagonheatmap.initialize(options);
+                hexagonheatmap.data(hmhexatemp);         
+            
+            
+            };
+    
+     if(selector == "hmdruck" ){
+            var options = {
+               valueDomain: [90000, 101300, 110000],
+                colorRange: ['#FF0000', '#FE9E01', '#00796B']	
+            };
+         
+         
+          hexagonheatmap.initialize(options);
+                hexagonheatmap.data(hmhexadruck);         
+         
+         
+            };
+            
+            
+                  
+    };
     
     
     
@@ -163,55 +352,14 @@ function makeHexagonmap(data){
     return value;
 };
     
-    
-    function interpolColor(a, b, amount) { 
-    var ah = parseInt(a.replace(/#/g, ''), 16),
-        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-        bh = parseInt(b.replace(/#/g, ''), 16),
-        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
-        rr = ar + amount * (br - ar),
-        rg = ag + amount * (bg - ag),
-        rb = ab + amount * (bb - ab);
-    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
-};
-
-function colorpm(val){   
-    
-         
-      var col= parseInt(val);
-        if(val>= 0 && val < 25){ return "#00796b";};
-        if(val>= 25 && val < 50){
-        var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
-        return couleur;
-        };
-        if(val>= 50 && val < 75){
-        var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
-        return couleur;
-        };
-        if(val>= 75 && val < 100){
-        var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
-        return couleur;
-        };
-        if(val>=100 && val < 500){
-        var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
-        return couleur;
-        };
-        if(val>=100 && val < 500){ return "#8c0084";};       
   
-};
     
-
-
-
+    
+    
     
     
     </script>
-    
-    
-    
-    
-    
-    
+      
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
