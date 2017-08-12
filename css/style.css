@@ -81,6 +81,7 @@ display: inline-block;
     
 .graph{
     display: inline-block;
+        cursor: pointer;
 }
     
   

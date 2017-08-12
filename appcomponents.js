@@ -34,9 +34,16 @@
     $mdDialog.hide();
     map.setView(new L.LatLng(getOptions.coordinates[0], getOptions.coordinates[1]), getOptions.zoom);  
         
-    var mean = getMeans(map);
+    var meanMinMax = getMeans(map);
         
-    console.log(mean);
+    console.log(meanMinMax);
+        
+        console.log(val);
+        
+        texte = "In " + val.display + " ist der Wert für PM10 " + meanMinMax.PM10[0] +" http://luftdaten.info #luftdaten";
+                console.log(texte);
+
+        document.getElementById('info').innerHTML = "<div class='graph'><img src='http://localhost:8888/codes/fsapp/images/tlw.png' onclick ='twitter(texte)'></div>";     
     };
 
     function querySearch (query) {
@@ -53,7 +60,7 @@
                     item.loader = key;
                 arrayPlaces.push(item);
             });
-            console.log(arrayPlaces);
+//            console.log(arrayPlaces);
             return arrayPlaces;
         };
         
@@ -107,11 +114,11 @@
     map.setView(new L.LatLng(val.latitude, val.longitude), 17);  
         
         
-    var element = hmhexa.filter(item => item.id == val.id);
+    var element = hmhexaPM.filter(item => item.id == val.id);
         
-        console.log(element);
+//        console.log(element);
         
-         texte = "Mein Sensor hat den Wert " + element[0].data.PM10 + " für PM10! %23luftdaten http://luftdaten.info %23luftdaten";
+         texte = "Mein Sensor hat den Wert " + element[0].data.PM10 + " für PM10! #luftdaten http://luftdaten.info";
                 console.log(texte);
 
         document.getElementById('info').innerHTML = "<div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='http://localhost:8888/codes/fsapp/images/tlw.png' onclick ='twitter(texte)'></div>";   
@@ -137,13 +144,8 @@
     
 
     
-function twitter(txt){
-    
-    
-    window.open('https://twitter.com/intent/tweet?text=Mein Sensor'+txt+'&source=webclient');
-    
-    
-    
+function twitter(txt){    
+    window.open('https://twitter.com/intent/tweet?text='+txt+'&source=webclient');
 };
     
     
@@ -163,45 +165,33 @@ function getMeans(map){
     
     
     var inboundsPM = hmhexaPM.filter(function(item){
-        
         var position = new L.LatLng(item.latitude, item.longitude);
-        
         if (bbox.contains(position) == true){
-            
             return item;
-            
         };    
     });
     
     
      var inboundstemp = hmhexatemp.filter(function(item){
-        
         var position = new L.LatLng(item.latitude, item.longitude);
-        
         if (bbox.contains(position) == true){
-            
             return item;
-            
         };    
     });
     
     
      var inboundsdruck = hmhexadruck.filter(function(item){
-        
         var position = new L.LatLng(item.latitude, item.longitude);
-        
         if (bbox.contains(position) == true){
-            
             return item;
-            
         };    
     });
     
     
 
-    console.log(inboundsPM);
-    console.log(inboundstemp);
-    console.log(inboundsdruck);
+//    console.log(inboundsPM);
+//    console.log(inboundstemp);
+//    console.log(inboundsdruck);
 
     
     
@@ -241,14 +231,7 @@ function getMeans(map){
     var maxDruck = Math.max(...arrayDruck);
     
     
-    console.log(meanPM10);
-    console.log(minPM10);
-    console.log(maxPM10);
-
-    
-    
-    
-    return 4;
+    return {"PM10":[meanPM10,minPM10,maxPM10],"PM25":[meanPM25,minPM25,maxPM25]};
 };
 
 
