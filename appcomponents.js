@@ -1,6 +1,43 @@
 
   var app = angular
     .module('feinstaub', ['ngMaterial']);
+
+
+
+
+app.controller('InfoCtrl', InfoCtrl);
+
+
+  function InfoCtrl($mdDialog) {
+    var self = this;
+
+    self.openDialog = function($event) {
+      $mdDialog.show({
+        controller: DialogCtrlInfo,
+        controllerAs: 'ctrl',
+        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialoginfo.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose:true
+      })
+    }
+  };
+
+
+function DialogCtrlInfo ($mdDialog) {
+    var self = this;
+    self.cancel = function($event) {
+      $mdDialog.cancel();
+    };
+  };
+
+
+
+
+
+
+
+
     app.controller('StadtCtrl', StadtCtrl);
 
 
@@ -11,7 +48,7 @@
       $mdDialog.show({
         controller: DialogCtrlStadt,
         controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP/html/dialogstadt.tmpl.html',
+        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialogstadt.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose:true
@@ -90,7 +127,7 @@
       $mdDialog.show({
         controller: DialogCtrlSensor,
         controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP/html/dialogsensor.tmpl.html',
+        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialogsensor.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose:true
@@ -110,15 +147,34 @@
       $mdDialog.cancel();
     };
     self.finish = function($event,val) {  
+        
+        console.log(val);
+        
     $mdDialog.hide();
     map.setView(new L.LatLng(val.latitude, val.longitude), 17);  
         
         
-    var element = hmhexaPM.filter(item => item.id == val.id);
+//        REVOIR ICI
+        
+    var elementPM = hmhexaPM.filter(item => item.id == val.id);
+    var elementTemp = hmhexatemp.filter(item => item.id == val.id);
+    var elementDruck = hmhexadruck.filter(item => item.id == val.id);
+        
+        console.log(elementPM);
+        
+////        METTRE UN AUTRE TESTER QUE SELECTOR AUSSI DANS L INDEX
+//        
+//    if (elementPM.length != 0){reload("hmPM10");};
+//        
+//    if (elementTemp.length != 0 ){reload("hmTemp")};
+//        
+//    if (elementDruck.length != 0){reload("hmTemp")};
+//
+
         
 //        console.log(element);
         
-         texte = "Mein Sensor hat den Wert " + element[0].data.PM10 + " für PM10! #luftdaten http://luftdaten.info";
+         texte = "Mein Sensor hat den Wert " + elementPM[0].data.PM10 + " für PM10! #luftdaten http://luftdaten.info";
                 console.log(texte);
 
         document.getElementById('info').innerHTML = "<div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='http://localhost:8888/codes/fsapp/images/tlw.png' onclick ='twitter(texte)'></div>";   
@@ -135,13 +191,14 @@
 
       return function filterFn(sensor) {
         return (sensor.display.indexOf(stringQuery) === 0);
-//                  return (sensor.value.indexOf(query) === 0);
-
       };
 
     }
   } ; 
     
+
+
+
 
     
 function twitter(txt){    
@@ -233,6 +290,3 @@ function getMeans(map){
     
     return {"PM10":[meanPM10,minPM10,maxPM10],"PM25":[meanPM25,minPM25,maxPM25]};
 };
-
-
-    

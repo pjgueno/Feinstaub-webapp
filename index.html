@@ -13,76 +13,137 @@
 </head>
         
 <body ng-app="feinstaub">
+    
+<!--    <div layout="column" layout-sm="row" layout-gt-sm ="row" layout-md="row" layout-gt-md="row" >-->
+
             
+<div id ='appcontainer' layout="column">
+  <div id ='header' flex="20" layout="row"  layout-wrap ng-cloak>      
+        
+        <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="30" ng-cloak>
+        <md-content class="md-padding">
+        <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Meine Stadt</md-button>
+        </md-content>
+        </div>
+      
+        <div id = 'info' ng-controller="InfoCtrl as ctrl" flex="40" ng-cloak>
+        <md-content class="md-padding">
+        <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Informationen</md-button>
+        </md-content>
+        </div>
+      
+        <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="30" ng-cloak>
+        <md-content class="md-padding">
+        <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Mein Sensor</md-button>
+        </md-content>
+        </div>
+      
+        <div class ='controls' flex="20" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  id="hmPM10" value="hmPM10" onclick="reload(this.value)" ng-disabled="false" class="md-raised">PM10</md-button>
+        </md-content>
+        </div>
+        <div class ='controls' flex="20" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  id="hmPM2.5" value="hmPM2.5" onclick="reload(this.value)" ng-disabled="false" class="md-raised">PM2.5</md-button>
+        </md-content>
+        </div>
+        <div class ='controls' flex="20" ng-cloak>
+        <md-content class="md-padding">
+        <md-button id="hmtemp" value="hmtemp" onclick="reload(this.value)" ng-disabled="false" class="md-raised">Temp.</md-button> 
+        </md-content>
+        </div>
+        <div class ='controls' flex="20" ng-cloak>
+        <md-content class="md-padding">
+        <md-button id="hmhumi" value="hmhumi" onclick="reload(this.value)" ng-disabled="false" class="md-raised">Feucht.</md-button>
+        </md-content>
+        </div>
+        <div class ='controls' flex="20" ng-cloak>
+        <md-content class="md-padding">
+        <md-button id="hmdruck" value="hmdruck" onclick="reload(this.value)"  ng-disabled="false" class="md-raised">Druck</md-button>
+        </md-content>
+        </div>
+    
+    
 
-
-<div id = 'header' layout="column" layout-sm="row" layout-gt-sm ="row" layout-md="row" layout-gt-md="row" >
-  <div layout="row" layout-wrap flex>
-      
-<div id ='title' flex="100" ng-cloak>
-      <img id ='logo' src="images/logo.png">
-    Welcome to myAirRohrApp!
     
-      </div>
-<div id='presentation' flex="100"> 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    <a target="_blank" href="http://luftdaten.info">LUFTDATEN.INFO</a>
-    
-</div>      
-  <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="35" ng-cloak>
-<md-content class="md-padding">
-    <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Meine Stadt</md-button>
-  </md-content>
-      </div>
-  <div id = 'middle' flex="30">
-  </div>
-  <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="35" ng-cloak>
-<md-content class="md-padding">
-    <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Mein Sensor</md-button>
-  </md-content>
-      </div>
-<div id ='info' flex="100">
-    GRAPH ETC Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    
-      
-      
-      
 </div>
-      
-<div class ='controls' flex="20">
-    <button class="selec" id="hmPM10" value="hmPM10" onclick="reload(this.value)">PM10</button>
-
-    </div>
-
-      <div class ='controls' flex="20">
-    <button class="selec" id="hmPM2.5" value="hmPM2.5" onclick="reload(this.value)">PM2.5</button>
-
-    </div>
-      
-      <div class ='controls' flex="20">
-    <button class="selec" id="hmtemp" value="hmtemp" onclick="reload(this.value)">Temp.</button> 
-
-    </div>
-      
-      <div class ='controls' flex="20">
-    <button class="selec" id="hmhumi" value="hmhumi" onclick="reload(this.value)">Feucht.</button>
-
-    </div>
-      
-      <div class ='controls' flex="20">
-    <button class="selec" id="hmdruck" value="hmdruck" onclick="reload(this.value)">Druck</button>
-
-    </div>
+    <div id ='map'flex="80">
     
     
 
-    
-    
-    
-
+    <div id ='legendcontainer'>
+        <div class ="legend" id="legendpm">
+            <div id="legend-inner-pm">
+                <div class="gradient">
+                    <div class="limit"></div>
+                </div>
+                <div class="labels">
+                    <div class="label" style="bottom: 100%;"><b>500</b></div>
+                    <div class="label" style="bottom: 80%;"><b>100</b></div>
+                    <div class="label" style="bottom: 60%;"><b>75</b></div>
+                    <div class="label limit" style="bottom: 40%;"><b>50</b></div>
+                    <div class="label" style="bottom: 20%;"><b>25</b></div>
+                    <div class="label" style="bottom: 0%;"><b>0 &micro;g/m&sup3;</b></div>
+                </div>
+            </div>
+        </div>        
     </div>
-  <div id = 'map' flex></div>
- 
+
+       <div class ="legend" id="legendtemp">
+<div id="legend-inner-temp">
+<div class="gradient">
+<div class="limit">
+</div>
+</div>
+<div class="labels">
+<div class="label" style="bottom: 100%;"><b>50</b></div>
+<div class="label" style="bottom: 65%;"><b>25</b></div>
+<div class="label" style="bottom: 30%;"><b>0</b></div>
+<div class="label" style="bottom: 0%;"><b>-20 &deg;</b></div>
+</div>
+</div>
+</div>
+    
+<div class ="legend" id="legendhumi">
+<div id="legend-inner-humi">
+<div class="gradient">
+<div class="limit">
+</div>
+</div>
+<div class="labels">
+    <div class="label" style="bottom: 100%;"><b>100</b></div>
+    <div class="label" style="bottom: 80%;"><b>80</b></div>
+<div class="label" style="bottom: 60%;"><b>60</b></div>
+<div class="label " style="bottom: 40%;"><b>40</b></div>
+<div class="label" style="bottom: 20%;"><b>20</b></div>
+<div class="label" style="bottom: 0%;"><b>0 &#37;</b></div>
+</div>
+</div>
+</div> 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    </div> 
 </div>
 
 
@@ -104,22 +165,22 @@
     var hexahmtest = false;
     var arraySensors = [];
     var arraySensorsDruck = [];
+           
+    var mitDruck = false;
 
 
-
-    
-    window.onload=function(){
-        
-        
-        map = L.map('map').setView([48.8, 9.2 ], 6);
+ map = L.map('map').setView([48.8, 9.2 ], 6);
         map.options.minZoom = 2;
 
 
     tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
 				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
 				maxZoom: 18}).addTo(map);
-        
-        
+
+
+    
+    window.onload=function(){
+                
        d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
