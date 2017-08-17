@@ -17,7 +17,8 @@
 <!--    <div layout="column" layout-sm="row" layout-gt-sm ="row" layout-md="row" layout-gt-md="row" >-->
 
             
-<div id ='appcontainer' layout="column">
+<div id ='appcontainer' layout="column">    
+    
   <div id ='header' flex="20" layout="row"  layout-wrap ng-cloak>      
         
         <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="30" ng-cloak>
@@ -64,7 +65,37 @@
         </md-content>
         </div>
     
+      
+      <div class ='dynamic' ng-controller="WerteCtrl as ctrl" flex="50" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  id ='werte' ng-click="ctrl.openDialog($event)" ng-disabled="true" class="md-raised">Werte</md-button>
+        </md-content>
+        </div>
+      
+      <div class ='dynamic' flex="50" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  id="twitter" onclick="twitter(texte)" ng-disabled="true" class="md-raised">Twitter</md-button>
+        </md-content>
+        </div>
     
+      
+<!--
+      
+           <div id ='werte' ng-controller="WerteCtrl as ctrl" flex="50" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  ng-click="ctrl.openDialog($event)" ng-disabled="true" class="md-raised">Werte</md-button>
+        </md-content>
+        </div>
+      
+      <div id ='twitter' flex="50" ng-cloak>
+        <md-content class="md-padding">
+        <md-button  onclick="twitter(txt)" ng-disabled="true" class="md-raised">Twitter</md-button>
+        </md-content>
+        </div>
+    
+      
+      
+-->
 
     
 </div>
@@ -124,6 +155,22 @@
         
         
         
+<div class ="legend" id="legenddruck">
+<div id="legend-inner-druck">
+<div class="gradient">
+<div class="limit">
+</div>
+</div>
+<div class="labels">
+<div class="label " style="bottom: 100%;"><b>1100 hPa</b></div>
+<div class="label" style="bottom: 50%;"><b>1013 hPa</b></div>
+<div class="label" style="bottom: 0%;"><b>926 hPa</b></div>
+</div>
+</div>
+</div> 
+        
+        
+        
         
         
         
@@ -168,18 +215,18 @@
            
     var mitDruck = false;
 
+    var dynamictemplate = "";
 
- map = L.map('map').setView([48.8, 9.2 ], 6);
+    
+    window.onload=function(){
+        
+        map = L.map('map').setView([48.8, 9.2 ], 6);
         map.options.minZoom = 2;
 
 
     tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
 				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
 				maxZoom: 18}).addTo(map);
-
-
-    
-    window.onload=function(){
                 
        d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
@@ -188,12 +235,19 @@
            
  
         map.on('moveend', function() { 
-    if(hexahmtest == true){hexagonheatmap._zoomChange();};    
+            document.getElementById("twitter").disabled = true; 
+            document.getElementById("werte").disabled = true;   
+
+
+    if(hexahmtest == true){hexagonheatmap._zoomChange();}; 
 
 });
     
 
 map.on('zoomend', function() {
+    document.getElementById("twitter").disabled = true; 
+    document.getElementById("werte").disabled = true;   
+
 if(hexahmtest == true){hexagonheatmap._zoomChange();};    
 });
         
@@ -327,7 +381,7 @@ function makeHexagonmap(data){
      if(selector == "hmdruck" ){
 
             var options = {
-               valueDomain: [90000, 101300, 110000],
+               valueDomain: [92600, 101300, 110000],
                 colorRange: ['#FF0000', '#FE9E01', '#00796B']	
             };
          
@@ -350,6 +404,14 @@ function makeHexagonmap(data){
             selector = val;
     
             if(selector == "hmPM10" || selector == "hmPM2.5" ){
+                
+            document.getElementById('legenddruck').style.visibility='hidden';
+            document.getElementById('legendtemp').style.visibility='hidden';
+            document.getElementById('legendhumi').style.visibility='hidden';
+            document.getElementById('legendpm').style.visibility='visible';
+                
+                
+                
             var options = {
             valueDomain: [20, 40, 60, 100, 500],
             colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
@@ -357,11 +419,18 @@ function makeHexagonmap(data){
                 
                 
                  hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexaPM);         
+                hexagonheatmap.data(hmhexaPM); 
                 
+        
             };
     
         if(selector == "hmtemp" ){
+            
+            document.getElementById('legenddruck').style.visibility='hidden';
+            document.getElementById('legendtemp').style.visibility='visible';
+            document.getElementById('legendhumi').style.visibility='hidden';
+            document.getElementById('legendpm').style.visibility='hidden';            
+            
         var options = {
                 valueDomain: [-20, 0, 50],
                 colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
@@ -374,6 +443,13 @@ function makeHexagonmap(data){
         };
     
         if(selector == "hmhumi" ){
+            
+            document.getElementById('legenddruck').style.visibility='hidden';
+            document.getElementById('legendtemp').style.visibility='hidden';
+            document.getElementById('legendhumi').style.visibility='visible';
+            document.getElementById('legendpm').style.visibility='hidden';            
+            
+            
             var options = {
                 valueDomain: [0,100],
 		      colorRange: ['#FFFFFF', '#0000FF']	
@@ -386,6 +462,13 @@ function makeHexagonmap(data){
             };
     
      if(selector == "hmdruck" ){
+         
+            document.getElementById('legenddruck').style.visibility='visible';
+            document.getElementById('legendtemp').style.visibility='hidden';
+            document.getElementById('legendhumi').style.visibility='hidden';
+            document.getElementById('legendpm').style.visibility='hidden';
+         
+         
             var options = {
                valueDomain: [90000, 101300, 110000],
                 colorRange: ['#FF0000', '#FE9E01', '#00796B']	

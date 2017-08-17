@@ -51,7 +51,7 @@ z-index: 0;
     height: 225px;
     width: 100px;
     z-index: 1000;
-    background-color: rgba(238,238,238,1.0);
+    background-color: rgba(238,238,238,0.6);
     }
 
 
@@ -60,6 +60,9 @@ z-index: 0;
 #legendtemp{visibility: hidden}
 
 #legendhumi{visibility: hidden}
+
+#legenddruck{visibility: hidden}
+
 
 
 #legend-inner-pm {
@@ -75,7 +78,7 @@ z-index: 0;
         }
 
 #legend-inner-pm .gradient {
-        opacity: 1.0;
+        opacity: 0.8;
         width: 20px;
         background: -webkit-linear-gradient(bottom, #00796b 0%, #00796b 16%, #f9a825 32%, #e65100 48%, #dd2c00 72%, #dd2c00 80%, #8c0084 100%);
         background: linear-gradient(to top, #00796b 0%, #00796b 16%, #f9a825 32%, #e65100 48%, #dd2c00 72%, #dd2c00 80%, #8c0084 100%);
@@ -182,6 +185,46 @@ z-index: 0;
         content: '\2013   ';
         }
 
+
+
+#legend-inner-druck {
+        position: fixed;
+        left: 30px;
+        bottom: 20px;
+        z-index: 1001;
+        pointer-events: none;
+        height: 200px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        }
+
+#legend-inner-druck .gradient {
+        opacity: 0.8;
+        width: 20px;
+        background: -webkit-linear-gradient(bottom, #FF0000 0%, #FE9E01 50%, #00796B 100%);
+        background: linear-gradient(to top, #FF0000 0%, #FE9E01 50%, #00796B 100%);
+        position: relative;
+        }
+
+#legend-inner-druck .labels {
+        width: 150px;
+        position: relative;
+        }
+
+#legend-inner-druck .labels .label {
+        position: absolute;
+        -webkit-transform: translateY(50%);
+        transform: translateY(50%);
+        }
+
+
+#legend-inner-druck .labels .label:before {
+        content: '\2013   ';
+        }
+
+
+
 .leaflet-pane > svg .d3-overlay path{
              pointer-events: all;}
 
@@ -205,3 +248,29 @@ img.leaflet-tile{
         select option {
                 background:#CECECE;
             }
+
+
+table{
+        font-family: arial, sans-serif;
+		width: 100%;
+		margin-right: 1rem;
+        border: 1px solid #000;
+		border-collapse: collapse;
+        background:rgba(255, 255, 255, 1);
+        }
+
+td{
+        background-color: #FFFFFF;
+        height: 20px;
+        text-align: right;
+        padding-right: 5px;
+        border-width: 0px 1px 0px 1px;
+        border-style: solid;
+        }
+
+th{
+        background-color: #FFFFFF;
+        height: 20px;
+        font-weight: bold;
+        border: 1px solid #000;
+        }

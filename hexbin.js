@@ -247,53 +247,7 @@ function populateTable(data){
 
      tabfin = debut + parseInt(meanPM10) + "</td><td class='val2'>" + parseInt(meanPM25) + "</td></tr>" + tabsensor + "</table>";
         
-        
-//        
-//        
-//       <md-dialog aria-label="Autocomplete Stadt">
-//
-//  <md-toolbar>
-//    <div class="md-toolbar-tools">
-//      <h2>OK Lab Stuttgart</h2>
-//      <span flex></span>
-//      <md-button class="md-icon-button" ng-click="ctrl.cancel()">
-//        <md-icon md-svg-src="images/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-//      </md-button>
-//    </div>
-//  </md-toolbar>
-//
-//  <md-dialog-content ng-cloak>
-//    <div class="md-dialog-content">
-//        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-//    <a target="_blank" href="http://luftdaten.info">LUFTDATEN.INFO</a>
-//    </div>
-//  </md-dialog-content>
-//</md-dialog>
-// 
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        this
-        
-        console.log('click');
-        
-        window.openDialog = function($event) {
-      $mdDialog.show({
-        controller: DialogCtrlInfo,
-        controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialoginfo.tmpl.html',
-        parent: angular.element(document.body),
-        targetEvent: $event,
-        clickOutsideToClose:true
-      })
-    }
-        
-//    document.getElementById('results').innerHTML = tabfin;
+
 
    };
     
@@ -320,7 +274,7 @@ function populateTable(data){
 
      tabfin = debut + parseInt(meanTemp) + "</td><td class='val2'>" + parseInt(meanHumi) + "</td></tr>" + tabsensor + "</table>";
         
-    document.getElementById('results').innerHTML = tabfin;   
+//    document.getElementById('results').innerHTML = tabfin;   
     };
 };
 
