@@ -8,7 +8,7 @@ L.HexbinLayer = L.Layer.extend({
 		onmouseout: undefined,
                 click: undefined,
 
-        click: populateTable,
+//        click: populateTable,
 		lng: function (d) {
 			return d.longitude
 		},

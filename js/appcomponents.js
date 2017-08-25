@@ -351,14 +351,7 @@ function DialogCtrlInfo ($mdDialog) {
 
 
         
-//        console.log(element);
-        
 
-
-//        document.getElementById('info').innerHTML = "<div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width=250&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'></div><div class='graph'><img src='http://localhost:8888/codes/fsapp/images/tlw.png' onclick ='twitter(texte)'></div>";   
-
-
-        
 
         document.getElementById("twitter").disabled = false; 
         
