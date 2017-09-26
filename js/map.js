@@ -36,7 +36,7 @@
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
     .awaitAll(ready); 
                    
-    setInterval(function(){ 
+   d3.interval(function(){ 
     
          d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
