@@ -12,62 +12,62 @@
 <script src="js/hexbin.js"></script>
 </head>
         
-<body ng-app="feinstaub" layout="column">
+<body ng-app="feinstaub" layout="row" layout-xs="column">
                 
-  <div id ='header' flex="25" layout="row" layout-wrap >      
+  <div id ='header' flex='40' flex-xs='25' layout= "column" layout-xs="row" layout-wrap >      
         
-        <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="30" ng-cloak>
+        <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="20" flex-xs="30" flex-order="1" flex-order-xs="1" ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Meine Stadt</md-button>
         </md-content>
         </div>
       
-        <div id = 'info' ng-controller="InfoCtrl as ctrl" flex="40" ng-cloak>
+        <div id = 'info' ng-controller="InfoCtrl as ctrl" flex="20" flex-xs="40" flex-order="2" flex-order-xs="2"  ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Informationen</md-button>
         </md-content>
         </div>
       
-        <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="30" ng-cloak>
+        <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="20" flex-xs="30"  flex-order="3" flex-order-xs="3" ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Mein Sensor</md-button>
         </md-content>
         </div>
       
-        <div class ='controls' flex="20" ng-cloak>
+        <div class ='controls' flex-xs="20" flex-order-xs="4" flex="20" flex-order="6" ng-cloak>
         <md-content class="md-padding">
         <md-button  id="hmPM10" value="hmPM10" onclick="reload(this.value)" ng-disabled="false" class="md-raised">PM10</md-button>
         </md-content>
         </div>
-        <div class ='controls' flex="20" ng-cloak>
+        <div class ='controls' flex-xs="20" flex-order-xs="5" flex="20" flex-order="7" ng-cloak>
         <md-content class="md-padding">
         <md-button  id="hmPM2.5" value="hmPM2.5" onclick="reload(this.value)" ng-disabled="false" class="md-raised">PM2.5</md-button>
         </md-content>
         </div>
-        <div class ='controls' flex="20" ng-cloak>
+        <div class ='controls' flex-xs="20" flex-order-xs="6" flex="20"  flex-order="8" ng-cloak>
         <md-content class="md-padding">
         <md-button id="hmtemp" value="hmtemp" onclick="reload(this.value)" ng-disabled="false" class="md-raised">Temp.</md-button> 
         </md-content>
         </div>
-        <div class ='controls' flex="20" ng-cloak>
+        <div class ='controls' flex-xs="20" flex-order-xs="7" flex="20" flex-order="9" ng-cloak>
         <md-content class="md-padding">
         <md-button id="hmhumi" value="hmhumi" onclick="reload(this.value)" ng-disabled="false" class="md-raised">Feucht.</md-button>
         </md-content>
         </div>
-        <div class ='controls' flex="20" ng-cloak>
+        <div class ='controls'  flex-xs="20" flex-order-xs="8" flex="20" flex-order="10"  ng-cloak>
         <md-content class="md-padding">
         <md-button id="hmdruck" value="hmdruck" onclick="reload(this.value)"  ng-disabled="false" class="md-raised">Druck</md-button>
         </md-content>
         </div>
     
       
-      <div class ='dynamic' ng-controller="WerteCtrl as ctrl" flex="50" ng-cloak>
+      <div class ='dynamic' ng-controller="WerteCtrl as ctrl" flex="20" flex-xs="50" flex-order="4" flex-order-xs="9" ng-cloak>
         <md-content class="md-padding">
         <md-button  id ='werte' ng-click="ctrl.openDialog($event)" ng-disabled="true" class="md-raised">Werte</md-button>
         </md-content>
         </div>
       
-      <div class ='dynamic' flex="50" ng-cloak>
+      <div class ='dynamic' flex="20" flex-xs="50" flex-order-xs="10"  flex-order="5" ng-cloak>
         <md-content class="md-padding">
         <md-button  id="twitter" onclick="twitter(texte)" ng-disabled="true" class="md-raised">Twitter</md-button>
         </md-content>
@@ -94,7 +94,7 @@
 
     
 </div>
-    <div id ='map'flex="75">
+    <div id ='map'flex='60' flex-xs='75'>
     
     
 
