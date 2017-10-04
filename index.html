@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
@@ -16,19 +17,19 @@
                 
   <div id ='header' flex='40' flex-xs='25' layout= "column" layout-xs="row" layout-wrap >      
         
-        <div id ='stadt' ng-controller="StadtCtrl as ctrl" flex="20" flex-xs="30" flex-order="1" flex-order-xs="1" ng-cloak>
+        <div id ='stadt' style = "display: flex;justify-content: center;align-items: center;" ng-controller="StadtCtrl as ctrl" flex="20" flex-xs="30" flex-order="1" flex-order-xs="1" ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Meine Stadt</md-button>
         </md-content>
         </div>
       
-        <div id = 'info' ng-controller="InfoCtrl as ctrl" flex="20" flex-xs="40" flex-order="2" flex-order-xs="2"  ng-cloak>
+        <div id = 'info' style = "display: flex;justify-content: center;align-items: center;"  ng-controller="InfoCtrl as ctrl" flex="20" flex-xs="40" flex-order="2" flex-order-xs="2"  ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Informationen</md-button>
         </md-content>
         </div>
       
-        <div id ='sensor' ng-controller="SensorCtrl as ctrl" flex="20" flex-xs="30"  flex-order="3" flex-order-xs="3" ng-cloak>
+        <div id ='sensor' style = "display: flex;justify-content: center;align-items: center;" ng-controller="SensorCtrl as ctrl" flex="20" flex-xs="30"  flex-order="3" flex-order-xs="3" ng-cloak>
         <md-content class="md-padding">
         <md-button ng-click="ctrl.openDialog($event)" class="md-raised">Mein Sensor</md-button>
         </md-content>
@@ -73,25 +74,6 @@
         </md-content>
         </div>
     
-      
-<!--
-      
-           <div id ='werte' ng-controller="WerteCtrl as ctrl" flex="50" ng-cloak>
-        <md-content class="md-padding">
-        <md-button  ng-click="ctrl.openDialog($event)" ng-disabled="true" class="md-raised">Werte</md-button>
-        </md-content>
-        </div>
-      
-      <div id ='twitter' flex="50" ng-cloak>
-        <md-content class="md-padding">
-        <md-button  onclick="twitter(txt)" ng-disabled="true" class="md-raised">Twitter</md-button>
-        </md-content>
-        </div>
-    
-      
-      
--->
-
     
 </div>
     <div id ='map'flex='60' flex-xs='75'>

@@ -43,7 +43,7 @@ app.controller('InfoCtrl', InfoCtrl);
       $mdDialog.show({
         controller: DialogCtrlInfo,
         controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialoginfo.tmpl.html',
+        templateUrl: 'http://localhost:8888/CODES/Feinstaub-webapp/html/dialoginfo.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose:true
@@ -72,7 +72,7 @@ function DialogCtrlInfo ($mdDialog) {
       $mdDialog.show({
         controller: DialogCtrlStadt,
         controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialogstadt.tmpl.html',
+        templateUrl: 'http://localhost:8888/CODES/Feinstaub-webapp/html/dialogstadt.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose:true
@@ -213,7 +213,7 @@ function DialogCtrlInfo ($mdDialog) {
       $mdDialog.show({
         controller: DialogCtrlSensor,
         controllerAs: 'ctrl',
-        templateUrl: 'http://localhost:8888/CODES/FSAPP3/html/dialogsensor.tmpl.html',
+        templateUrl: 'http://localhost:8888/CODES/Feinstaub-webapp/html/dialogsensor.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         clickOutsideToClose:true

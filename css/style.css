@@ -38,8 +38,17 @@ z-index: 0;
     
     .controls{
     height: auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.dynamic{
+     height: auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .md-raised{
     min-height: 90% !important;
@@ -52,7 +61,6 @@ z-index: 0;
 
 md-dialog{
         min-width: 60% !important;
-/*    min-height: 20%;   */
 }
 
 .md-toolbar-tools{
@@ -61,28 +69,30 @@ md-dialog{
     
 }
 
-/*
-.md-button{
-    font-size: 25px !important;
-    overflow-x: hidden;
-
-}
-*/
 
 @media screen and (min-width: 400px) {
    .md-button{
     font-size: 2vw !important;
+    margin: 0px !important;
     overflow-x: hidden;
-
 }
+    .md-toolbar-tools{
+      font-size: 4vw !important;  
+    }
+    
 }
 
 @media screen and (max-width: 400px) {
    .md-button{
     font-size: 3vw !important;
+    margin: 0px !important;
     overflow-x: hidden;
-
 }
+    
+    .md-toolbar-tools{
+      font-size: 6vw !important;  
+    }
+    
 }
 
 
@@ -151,11 +161,8 @@ md-autocomplete md-autocomplete-wrap{
         left: 30px;
         bottom: 20px;
         z-index: 1001;
-        pointer-events: none;
-/*        height: 320px;*/
-    
+        pointer-events: none;    
         height: 80%;
-
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -203,7 +210,7 @@ md-autocomplete md-autocomplete-wrap{
         bottom: 20px;
         z-index: 1001;
         pointer-events: none;
-        height: 320px;
+        height: 80%;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -239,7 +246,7 @@ md-autocomplete md-autocomplete-wrap{
         bottom: 20px;
         z-index: 1001;
         pointer-events: none;
-        height: 320px;
+        height: 80%;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -277,7 +284,7 @@ md-autocomplete md-autocomplete-wrap{
         bottom: 20px;
         z-index: 1001;
         pointer-events: none;
-        height: 320px;
+        height: 80%;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;

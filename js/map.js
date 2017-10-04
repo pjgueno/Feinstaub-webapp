@@ -16,6 +16,8 @@
 
     var dynamictemplate = "";
 
+    var options;
+
     
     window.onload=function(){
         
@@ -52,7 +54,7 @@
             document.getElementById("werte").disabled = true;   
 
 
-    if(hexahmtest == true){hexagonheatmap._zoomChange();}; 
+    if(hexahmtest === true){hexagonheatmap._zoomChange();}; 
 
 });
     
@@ -61,7 +63,7 @@ map.on('zoomend', function() {
     document.getElementById("twitter").disabled = true; 
     document.getElementById("werte").disabled = true;   
 
-if(hexahmtest == true){hexagonheatmap._zoomChange();};    
+if(hexahmtest === true){hexagonheatmap._zoomChange();};    
 });
         
       
@@ -74,6 +76,8 @@ if(hexahmtest == true){hexagonheatmap._zoomChange();};
   function ready(error,data) {
   if (error) throw error;
      
+      hmhexaPM =[];
+      hmhexatemp =[];
      
          data[0].forEach(function(item){
             
@@ -142,20 +146,10 @@ function makeHexagonmap(data){
     if(selector == "hmPM10" || selector == "hmPM2.5" ){
     
     
-    var options = {
+     options = {
                 valueDomain: [20, 40, 60, 100, 500],
                 colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
                 };
-        
-        
-//        if (hexahmtest == false){
-//        
-//           hexahmtest = true;
-//                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
-//                    hexagonheatmap.data(data); 
-//        }else{
-//            hexagonheatmap.initialize(options);
-//            hexagonheatmap.data(data)};
 
     };
     
@@ -163,68 +157,35 @@ function makeHexagonmap(data){
         if(selector == "hmtemp" ){
 
     
-     var options = {
+      options = {
                 valueDomain: [-20, 0, 50],
                 colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
             };
             
-//        if (hexahmtest == false){
-//    
-//               hexahmtest = true;
-//                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
-//                    hexagonheatmap.data(data); 
-//            }else{hexagonheatmap.initialize(options);
-//            hexagonheatmap.data(data)};
-
-    
         };
     
     
             if(selector == "hmhumi" ){
 
-            var options = {
+             options = {
                 valueDomain: [0,100],
 		      colorRange: ['#FFFFFF', '#0000FF']	
             };
-    
-//        if (hexahmtest == false){
-//
-//               hexahmtest = true;
-//                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
-//                    hexagonheatmap.data(data); 
-//                
-//                    }else{hexagonheatmap.initialize(options);
-//            hexagonheatmap.data(data)};
-
-            
             
             };
-    
-    
-                  
-    
-    
     
     
     
      if(selector == "hmdruck" ){
 
-            var options = {
+             options = {
                valueDomain: [92600, 101300, 110000],
                 colorRange: ['#FF0000', '#FE9E01', '#00796B']	
             };
 
-//        if (hexahmtest == false){
-//
-//            hexahmtest = true;
-//                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
-//                    hexagonheatmap.data(data); 
-//            }else{hexagonheatmap.initialize(options);
-//            hexagonheatmap.data(data)};
-
             };
     
- if (hexahmtest == false){
+ if (hexahmtest === false){
 
             hexahmtest = true;
                     hexagonheatmap = L.hexbinLayer(options).addTo(map);
@@ -251,7 +212,7 @@ function makeHexagonmap(data){
                 
                 
                 
-            var options = {
+             options = {
             valueDomain: [20, 40, 60, 100, 500],
             colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
             };
@@ -270,7 +231,7 @@ function makeHexagonmap(data){
             document.getElementById('legendhumi').style.visibility='hidden';
             document.getElementById('legendpm').style.visibility='hidden';            
             
-        var options = {
+         options = {
                 valueDomain: [-20, 0, 50],
                 colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
             };
@@ -289,7 +250,7 @@ function makeHexagonmap(data){
             document.getElementById('legendpm').style.visibility='hidden';            
             
             
-            var options = {
+             options = {
                 valueDomain: [0,100],
 		      colorRange: ['#FFFFFF', '#0000FF']	
             };
@@ -308,7 +269,7 @@ function makeHexagonmap(data){
             document.getElementById('legendpm').style.visibility='hidden';
          
          
-            var options = {
+             options = {
                valueDomain: [90000, 101300, 110000],
                 colorRange: ['#FF0000', '#FE9E01', '#00796B']	
             };
