@@ -1,7 +1,7 @@
     var texte;
-    var hmhexaPM =[];
-    var hmhexatemp =[];
-    var hmhexadruck =[];
+    var hmhexaPM;
+    var hmhexatemp;
+    var hmhexadruck;
 
     
     var map;
@@ -9,10 +9,10 @@
 
     var selector = "hmPM10";
     var hexahmtest = false;
-    var arraySensors = [];
-    var arraySensorsDruck = [];
+    var arraySensors;
+    var arraySensorsDruck;
            
-    var mitDruck = false;
+//    var mitDruck = false;
 
     var dynamictemplate = "";
 
@@ -75,64 +75,46 @@ if(hexahmtest === true){hexagonheatmap._zoomChange();};
     
   function ready(error,data) {
   if (error) throw error;
-     
-      hmhexaPM =[];
-      hmhexatemp =[];
-     
-         data[0].forEach(function(item){
-            
-               var objecthexa ={"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
-                
-                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"PM"};
-                                
-            hmhexaPM.push(objecthexa); 
-            arraySensors.push(objectsensor);
-            arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
 
-            });
+      hmhexaPM = data[0].map(function(item){return {"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
+      
+      
+      hmhexatemp = data[1].map(function(item){return {"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature")) , "Humi": parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
+      
+      
+      
+      
+      
+       hmhexadruck = data[1].reduce(function(filtered, item) {
+              if (item.sensordatavalues.length == 3) {
+                 filtered.push({"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+              return filtered;
+            }, []);
+      
+      
+      var tab1 = data[0].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"PM"}});
+      var tab2 = data[1].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"TH"}});
+       
      
-     
-     
-     data[1].forEach(function(item){
-            
-               var objecthexa ={"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature")) , "Humi": parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
-                
-                var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"TH"};
-                                
-            hmhexatemp.push(objecthexa);
-            arraySensors.push(objectsensor);
-            arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
+      arraySensors = tab1.concat(tab2);
+      arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
 
-            });
       
-      
-      
-      data[1].forEach(function(item){
-            
-          
-          if(item.sensordatavalues.length == 3){
-              
-               var objecthexa ={"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude};
-              
-              var objectsensor = {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"P"};
-                          
-              hmhexadruck.push(objecthexa);
-              arraySensorsDruck.push(objectsensor);
-            arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );       
-          };
-            });
+      var arraySensorsDruck = data[1].reduce(function(filtered, item) {
+          if (item.sensordatavalues.length == 3) {
+             filtered.push({"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"P"});
+          }
+          return filtered;
+        }, []);
       
 
       
       
+      arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
       
-      
-      
-      if(selector == "hmPM10" || selector == "hmPM2.5") {makeHexagonmap(hmhexaPM);};
-      
-      
-        if(selector == "hmtemp" || selector == "hmhumi"){makeHexagonmap(hmhexatemp);};
 
+      if(selector == "hmPM10" || selector == "hmPM2.5") {makeHexagonmap(hmhexaPM);};      
+      if(selector == "hmtemp" || selector == "hmhumi"){makeHexagonmap(hmhexatemp);};
       if(selector == "hmdruck" ){makeHexagonmap(hmhexadruck);};
         
  };      
@@ -278,14 +260,8 @@ function makeHexagonmap(data){
                hexagonheatmap.initialize(options);
                 hexagonheatmap.data(hmhexadruck);    
          
-         
-            };
-             
-                  
+            };            
     };
-    
-    
-    
     
     function getRightValue(array,type){
     var value;

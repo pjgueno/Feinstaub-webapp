@@ -25,15 +25,24 @@ z-index: 0;
 
 #stadt {
         height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #sensor {
         height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
     
 #info{
-    height: auto; 
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
     
     .controls{
@@ -69,7 +78,7 @@ md-dialog{
     
 }
 
-
+/*PAYSAGE*/
 @media screen and (min-width: 400px) {
    .md-button{
     font-size: 2vw !important;
@@ -82,6 +91,8 @@ md-dialog{
     
 }
 
+/*PORTRAIT*/
+
 @media screen and (max-width: 400px) {
    .md-button{
     font-size: 3vw !important;
@@ -90,7 +101,7 @@ md-dialog{
 }
     
     .md-toolbar-tools{
-      font-size: 6vw !important;  
+      font-size: 8vw !important;  
     }
     
 }
@@ -104,10 +115,9 @@ md-dialog{
 
 }
 
-/*.md-autocomplete */
 
 input{
-    font-size: 30px !important; 
+    font-size: 25px !important; 
     height: 60px !important;
 }
 
@@ -129,20 +139,14 @@ md-autocomplete md-autocomplete-wrap{
   .legend {
     font-family: arial, sans-serif;
     color:black;
-    font-size: 20px; 
+    font-size: 10px; 
     position: absolute;
-    left: 10px;
-    bottom: 10px;
-/*
-    height: 350px;
-    width: 150px;
-*/
+    left: -15px;
+    bottom: -10px;
     height: 40%;
-    width: 150px;
-      
-      
+    width: 150px; 
     z-index: 1000;
-    background-color: rgba(238,238,238,0.6);
+    background-color: rgba(238,238,238,0.0);
     }
 
 
@@ -203,6 +207,17 @@ md-autocomplete md-autocomplete-wrap{
 #legend-inner-pm .labels .label.limit {
         color: #d50000;
         }
+#legend-inner-pm .gradient .limit {
+    height: 2px;
+    width: 30px;
+    background-color: #d50000;
+    position: absolute;
+    left: -5px;
+    bottom: calc(40% - 1px);
+}
+
+
+
 
 #legend-inner-temp {
         position: absolute;
@@ -354,7 +369,7 @@ table{
 td{
         background-color: #FFFFFF;
         height: 25px;
-        text-align: right;
+        text-align: center;
         padding-right: 5px;
         border-width: 0px 1px 0px 1px;
         border-style: solid;

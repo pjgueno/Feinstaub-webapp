@@ -156,6 +156,7 @@ var positions = {"aachen":{"name":"Aachen","coordinates":[50.777,6.0836],"zoom":
 "langenfeld":{"name":"Langenfeld","coordinates":[51.1131,6.9522],"zoom":12},
 "langenhagen":{"name":"Langenhagen","coordinates":[52.4394,9.74],"zoom":12},
 "lausanne":{"name":"Lausanne","coordinates":[46.5194,6.6345],"zoom":12},
+"lecellier":{"name":"Le Cellier","coordinates":[47.319173,-1.347501],"zoom":12},                
 "leipzig":{"name":"Leipzig","coordinates":[51.3403,12.37475],"zoom":12},
 "leverkusen":{"name":"Leverkusen","coordinates":[51.0333,6.9833],"zoom":12},
 "lingen":{"name":"Lingen","coordinates":[52.5233,7.3172],"zoom":12},
