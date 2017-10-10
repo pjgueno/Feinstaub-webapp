@@ -36,6 +36,8 @@
                    
    d3.interval(function(){ 
     
+                   d3.selectAll('path.hexbin-hexagon').remove();
+
          d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
@@ -44,7 +46,7 @@
             console.log('reload')
            
     }, 300000);
-//            }, 60000);
+//            }, 5000);
 
  
         map.on('moveend', function() { 
@@ -173,6 +175,7 @@ function makeHexagonmap(data){
 
         function reload(val){
             div.style("display", "none");
+            d3.selectAll('path.hexbin-hexagon').remove();
             
             selector = val;
     
