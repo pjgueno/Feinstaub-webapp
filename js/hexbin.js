@@ -6,9 +6,8 @@ L.HexbinLayer = L.Layer.extend({
 		duration: 200,
 		onmouseover: undefined,
 		onmouseout: undefined,
-                click: undefined,
+        click: sensorNr,
 
-//        click: populateTable,
 		lng: function (d) {
 			return d.longitude
 		},
@@ -160,6 +159,8 @@ L.HexbinLayer = L.Layer.extend({
 
 		// exit
 		join.exit().remove()
+        
+        d3.selectAll('path.hexbin-hexagon').remove()
 
 		// add the hexagons to the select
 		this._createHexagons(join, data, projection)
@@ -219,62 +220,19 @@ L.hexbinLayer = function(options) {
 };
 
 
-function populateTable(data){
-    
-//     console.log(data);
-    
-//    document.getElementById('graphs').innerHTML = "";
-
-    if(selector == "hmPM10"||selector == "hmPM2.5"){
-    
-    var debut = "<table id='results'><tr><th class ='titre'>Sensor ID</th><th class ='titre'>PM10 &micro;g/m&sup3;</th><th class ='titre'>PM2.5 &micro;g/m&sup3;</th></tr><tr><td class='idsens'>Mean</td><td class='val1'>";
+function sensorNr(data){
         
-    var tabsensor = "";
-    var tabfin = "";
-    var meanPM10;
-    var meanPM25;
+    if (data.length == 1){var texte = "Sensor #" +data[0].o.id;};
+    if (data.length > 1){var texte = data.length + " Sensors";};
     
-    data.forEach(function(element){
+    
+       div.transition()		
+                .duration(200)		
+                .style("display", "inline")		
+            div	.html(texte)	
+                .style("left", (d3.event.pageX-45) + "px")		
+                .style("top", (d3.event.pageY-10) + "px");
                 
-         stop += 1;
-         var newline = "<tr><td class='idsens' onclick='showGraph("+element.o.id+")'>"+element.o.id+"</td><td class='val1'>"+element.o.data.PM10+"</td><td class='val2'>"+element.o.data.PM25+"</td></tr>";
-         
-         tabsensor += newline;     
-    });
     
-    meanPM10 = d3.mean(data, (o) => o.o.data.PM10);
-    meanPM25 = d3.mean(data, (o) => o.o.data.PM25);
-
-     tabfin = debut + parseInt(meanPM10) + "</td><td class='val2'>" + parseInt(meanPM25) + "</td></tr>" + tabsensor + "</table>";
-        
-
-
-   };
-    
-    if (selector == "hmtemp" || selector == "hmhumi" ){
-        
-        
-       var debut = "<table id='results'><tr><th class ='titre'>Sensor ID</th><th class ='titre'>Temperatur &deg;</th><th class ='titre'>Humidity %</th></tr><tr><td class='idsens'>Mean</td><td class='val1'>";
-        
-    var tabsensor = "";
-    var tabfin = "";
-    var meanTemp;
-    var meanHumi;
-    
-    data.forEach(function(element){
-                
-         stop += 1;
-         var newline = "<tr><td class='idsens'>"+element.o.id+"</td><td class='val1'>"+parseInt(element.o.data.Temp)+"</td><td class='val2'>"+parseInt(element.o.data.Humi)+"</td></tr>";
-         
-         tabsensor += newline;        
-    });
-    
-    meanTemp = d3.mean(data, (o) => o.o.data.Temp);
-    meanHumi = d3.mean(data, (o) => o.o.data.Humi);
-
-     tabfin = debut + parseInt(meanTemp) + "</td><td class='val2'>" + parseInt(meanHumi) + "</td></tr>" + tabsensor + "</table>";
-        
-//    document.getElementById('results').innerHTML = tabfin;   
-    };
 };
 

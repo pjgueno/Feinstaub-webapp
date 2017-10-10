@@ -139,7 +139,7 @@ md-autocomplete md-autocomplete-wrap{
   .legend {
     font-family: arial, sans-serif;
     color:black;
-    font-size: 10px; 
+    font-size: 15px; 
     position: absolute;
     left: -15px;
     bottom: -10px;
@@ -332,6 +332,7 @@ md-autocomplete md-autocomplete-wrap{
 
 
 .leaflet-pane > svg .d3-overlay path{
+    cursor:help;
              pointer-events: all;}
 
 
@@ -381,3 +382,23 @@ th{
         font-weight: bold;
         border: 1px solid #000;
         }
+
+
+#tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 8px;
+  margin-top: -20px;
+font-weight:bold;
+    font-family: arial, sans-serif;
+    color:black;
+    font-size: 15px;    
+  pointer-events: none;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+        background-color: rgb(250,250,250);
+    border-radius:2px;
+}
+
+.hexbin-hexagon{
+    stroke-width:0px;
+}

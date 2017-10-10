@@ -1,37 +1,33 @@
-    var texte;
+    var hexagonheatmap;
     var hmhexaPM;
     var hmhexatemp;
     var hmhexadruck;
+    var arraySensors;
+    var arraySensorsDruck;
 
-    
     var map;
     var tiles;
 
     var selector = "hmPM10";
-    var hexahmtest = false;
-    var arraySensors;
-    var arraySensorsDruck;
-           
-//    var mitDruck = false;
 
     var dynamictemplate = "";
 
-    var options;
+    var options = {
+                valueDomain: [20, 40, 60, 100, 500],
+                colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
+                };;
 
-    
+
+   var div = d3.select("body").append("div")
+    .attr("id", "tooltip")
+    .style("display", "none");
+
+
     window.onload=function(){
         
-        map = L.map('map',{ zoomControl:false }).setView([48.8, 9.2 ], 6);
-        map.options.minZoom = 2;
-
-
-    tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
-				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-				maxZoom: 18}).addTo(map);
-          
+        map.setView([50.495171, 9.730827], 6);
         
-        
-        
+    hexagonheatmap = L.hexbinLayer(options).addTo(map);
         
        d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
@@ -48,29 +44,35 @@
             console.log('reload')
            
     }, 300000);
+//            }, 60000);
+
  
         map.on('moveend', function() { 
             document.getElementById("twitter").disabled = true; 
-            document.getElementById("werte").disabled = true;   
-
-
-    if(hexahmtest === true){hexagonheatmap._zoomChange();}; 
-
-});
-    
-
-map.on('zoomend', function() {
-    document.getElementById("twitter").disabled = true; 
-    document.getElementById("werte").disabled = true;   
-
-if(hexahmtest === true){hexagonheatmap._zoomChange();};    
-});
+            document.getElementById("werte").disabled = true;  
+            
+        hexagonheatmap._zoomChange();
+        });
         
-      
+        map.on('move', function() { 
+        div.style("display", "none");
+        });
+
+        map.on('click', function() { 
+        div.style("display", "none");
+        });
         
         
     };
     
+
+ map = L.map('map',{ zoomControl:false });
+        map.options.minZoom = 2;
+
+
+    tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
+				attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+				maxZoom: 18}).addTo(map);
     
     
   function ready(error,data) {
@@ -80,10 +82,7 @@ if(hexahmtest === true){hexagonheatmap._zoomChange();};
       
       
       hmhexatemp = data[1].map(function(item){return {"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature")) , "Humi": parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
-      
-      
-      
-      
+
       
        hmhexadruck = data[1].reduce(function(filtered, item) {
               if (item.sensordatavalues.length == 3) {
@@ -100,16 +99,12 @@ if(hexahmtest === true){hexagonheatmap._zoomChange();};
       arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
 
       
-      var arraySensorsDruck = data[1].reduce(function(filtered, item) {
+        arraySensorsDruck = data[1].reduce(function(filtered, item) {
           if (item.sensordatavalues.length == 3) {
              filtered.push({"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"P"});
           }
           return filtered;
         }, []);
-      
-
-      
-      
       arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
       
 
@@ -167,14 +162,9 @@ function makeHexagonmap(data){
 
             };
     
- if (hexahmtest === false){
 
-            hexahmtest = true;
-                    hexagonheatmap = L.hexbinLayer(options).addTo(map);
-                    hexagonheatmap.data(data); 
-            }else{hexagonheatmap.initialize(options);
-            hexagonheatmap.data(data)};
-                   
+            hexagonheatmap.initialize(options);
+            hexagonheatmap.data(data);                   
 
 };
     
@@ -182,7 +172,8 @@ function makeHexagonmap(data){
     
 
         function reload(val){
-                        
+            div.style("display", "none");
+            
             selector = val;
     
             if(selector == "hmPM10" || selector == "hmPM2.5" ){
@@ -192,18 +183,12 @@ function makeHexagonmap(data){
             document.getElementById('legendhumi').style.visibility='hidden';
             document.getElementById('legendpm').style.visibility='visible';
                 
-                
-                
              options = {
             valueDomain: [20, 40, 60, 100, 500],
             colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
             };
-                
-                
-                 hexagonheatmap.initialize(options);
+                hexagonheatmap.initialize(options);
                 hexagonheatmap.data(hmhexaPM); 
-                
-        
             };
     
         if(selector == "hmtemp" ){
@@ -219,9 +204,7 @@ function makeHexagonmap(data){
             };
             
              hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexatemp);         
-            
-            
+                hexagonheatmap.data(hmhexatemp);
         };
     
         if(selector == "hmhumi" ){
@@ -238,9 +221,7 @@ function makeHexagonmap(data){
             };
             
              hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexatemp);         
-            
-            
+                hexagonheatmap.data(hmhexatemp);
             };
     
      if(selector == "hmdruck" ){
@@ -258,8 +239,7 @@ function makeHexagonmap(data){
          
          
                hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexadruck);    
-         
+                hexagonheatmap.data(hmhexadruck);  
             };            
     };
     
