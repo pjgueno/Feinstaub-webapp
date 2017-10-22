@@ -92,6 +92,8 @@
               return filtered;
             }, []);
       
+//      console.log(hmhexadruck);
+      
       
       var tab1 = data[0].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"PM"}});
       var tab2 = data[1].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"TH"}});

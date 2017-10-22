@@ -3,8 +3,6 @@
     .module('feinstaub', ['ngMaterial']);
 
 
-
-
 app.controller('WerteCtrl', WerteCtrl);
 
 
@@ -120,6 +118,9 @@ function DialogCtrlInfo ($mdDialog) {
         
         console.log(val);
         
+//                    AJOUTER TOUTES LES POSSIBILIES ICI
+                    
+                    
         texte = "In " + val.display + " ist der Wert für PM10 " + meanMinMax.PM10[0] +" %23luftdaten http://luftdaten.info";
                 console.log(texte);
 //
@@ -252,6 +253,11 @@ function DialogCtrlInfo ($mdDialog) {
     var elementPM = hmhexaPM.filter(item => item.id == val.id);
     var elementTemp = hmhexatemp.filter(item => item.id == val.id);
     var elementDruck = hmhexadruck.filter(item => item.id == val.id);
+    
+//    console.log(elementPM);
+//    console.log(elementTemp);
+//    console.log(elementDruck);
+    
     var titre ="";
     var content ="";
               
@@ -259,14 +265,7 @@ function DialogCtrlInfo ($mdDialog) {
     var rect = dialogDiv[0].getBoundingClientRect(); 
     
     var widthGraph = parseInt(rect.width);
-        
-        
-      console.log(widthGraph);  
-        
-        
-        
-        
-        
+                
     if (elementPM.length != 0){
         
         document.getElementById("hmPM10").disabled = false;
@@ -274,25 +273,20 @@ function DialogCtrlInfo ($mdDialog) {
         document.getElementById("hmtemp").disabled = true;
         document.getElementById("hmhumi").disabled = true;
         document.getElementById("hmdruck").disabled = true;
+        
         reload("hmPM10");  
         
         titre = "Feinstaub Sensor #"+ val.display;
         
         content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'>";
         
-        
-        if (selector =='hmPM10'){
-            
-            texte = "Mein Sensor hat den Wert " + elementPM[0].data.PM10 + " für PM10! %23luftdaten http://luftdaten.info";
+                    
+    texte = "Mein Sensor zeigt gerade die Werte " + elementPM[0].data.PM10 + " μg/m³ für PM10 und "  + elementPM[0].data.PM25 + " μg/m³ für PM2.5! %23luftdaten http://luftdaten.info";
                 console.log(texte);
-            
-        };
+                
         
-        if (selector =='hmPM2.5'){
-            
-            texte = "Mein Sensor hat den Wert " + elementPM[0].data.PM25 + " für PM2.5! %23luftdaten http://luftdaten.info";
-                console.log(texte);  
-        };
+//        METTRE LE RELOAD DANS LE IF + METTRE TOUTES LES POSSIBILITES => PAR DEFAUT REPASSER SUR PM10 OU TEMP SI SENSOR TYPE DIFFERENT
+        
     };
         
     if (elementTemp.length != 0 && elementDruck.length == 0 ){
@@ -309,18 +303,10 @@ function DialogCtrlInfo ($mdDialog) {
         
          content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td></tr></table>";
         
-         if (selector =='hmtemp'){
-            
-            texte = "Mein Sensor hat den Wert " + elementTemp[0].data.Temp + " für die Temperatur! %23luftdaten http://luftdaten.info";
+        
+        texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temperatur und " + elementTemp[0].data.Humi + " percent für die Feuchtigkeit! %23luftdaten http://luftdaten.info";
                 console.log(texte);
             
-        };
-        
-        if (selector =='hmhumi'){
-            
-            texte = "Mein Sensor hat den Wert " + elementTemp[0].data.Humi + " für die Feuchtigkeit! %23luftdaten http://luftdaten.info";
-                console.log(texte);  
-        };
     };
         
     if (elementTemp.length != 0 && elementDruck.length != 0){
@@ -331,19 +317,15 @@ function DialogCtrlInfo ($mdDialog) {
         document.getElementById("hmhumi").disabled = false;
         document.getElementById("hmdruck").disabled = false;
         
-        
-        reload("hmTemp");
-        
+        reload("hmtemp");
+
         titre = "Temp. + Feucht. + Druck Sensor #"+ val.display;
         
         content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + elementDruck[0].data.Druck + "</td></tr></table>";
     
+        texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temp., " + elementTemp[0].data.Humi + " percent für die Feucht. und " + parseInt(elementDruck[0].data.Press/100) + " hPa für den Druck! %23luftdaten http://luftdaten.info";
+        console.log(texte);
         
-        if (selector =='hmdruck'){
-            
-            texte = "Mein Sensor hat den Wert " + elementTemp[0].data.Druck + " für die Feuchtigkeit! %23luftdaten http://luftdaten.info";
-                console.log(texte);  
-        };
     };
 
         document.getElementById("twitter").disabled = false; 
@@ -355,10 +337,6 @@ function DialogCtrlInfo ($mdDialog) {
         
         dynamictemplate = part1+ titre + part2 + content + partfin;
         document.getElementById("werte").disabled = false;   
-    
-    
-    
-    
     };
    };
     function querySearch (query) {

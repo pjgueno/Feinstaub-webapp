@@ -144,7 +144,7 @@ md-autocomplete md-autocomplete-wrap{
     left: -15px;
     bottom: -10px;
     height: 40%;
-    width: 150px; 
+    width: 100px; 
     z-index: 1000;
     background-color: rgba(238,238,238,0.0);
     }
@@ -401,4 +401,9 @@ font-weight:bold;
 
 .hexbin-hexagon{
     stroke-width:0px;
+}
+
+#logooklab{
+     display: block;
+    margin: 0 auto;
 }
