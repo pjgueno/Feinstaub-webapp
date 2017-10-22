@@ -121,7 +121,7 @@ function DialogCtrlInfo ($mdDialog) {
 //                    AJOUTER TOUTES LES POSSIBILIES ICI
                     
                     
-        texte = "In " + val.display + " ist der Wert für PM10 " + meanMinMax.PM10[0] +" %23luftdaten http://luftdaten.info";
+        texte = "In " + val.display + " sind die Mittelwerte folgende: PM10= " + meanMinMax.PM10[0] +" und PM2.5= "+ meanMinMax.PM25[0] + " %23luftdaten http://luftdaten.info";
                 console.log(texte);
 //
                 document.getElementById("twitter").disabled = false;   
