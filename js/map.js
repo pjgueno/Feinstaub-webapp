@@ -56,6 +56,37 @@
             document.getElementById("werte").disabled = true;  
             
         hexagonheatmap._zoomChange();
+            
+//            CHECK IF TYPE OF SENSOR IN NEW ZOOM
+            
+       var bbox = map.getBounds();
+            
+            console.log(bbox);
+
+
+            var inboundsPM = hmhexaPM.filter(function(item){
+            var position = new L.LatLng(item.latitude, item.longitude);
+            if (bbox.contains(position) == true){
+                document.getElementById("hmPM10").disabled = false;
+                document.getElementById("hmPM2.5").disabled = false;            };    
+            });
+
+
+            var inboundstemp = hmhexatemp.filter(function(item){
+            var position = new L.LatLng(item.latitude, item.longitude);
+            if (bbox.contains(position) == true){
+                document.getElementById("hmtemp").disabled = false;
+                document.getElementById("hmhumi").disabled = false;            };    
+            });
+
+
+            var inboundsdruck = hmhexadruck.filter(function(item){
+            var position = new L.LatLng(item.latitude, item.longitude);
+            if (bbox.contains(position) == true){
+                document.getElementById("hmdruck").disabled = false;
+            };    
+            });
+    
         });
         
         map.on('move', function() { 
