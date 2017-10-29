@@ -21,6 +21,7 @@
             md-min-length="2"
             placeholder="Meine Stadt"
             md-select-on-match ="true"
+            md-match-case-insensitive ="true"
             md-autofocus>
           <md-item-template>
             <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>

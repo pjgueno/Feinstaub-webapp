@@ -1,5 +1,4 @@
-
-  var app = angular
+var app = angular
     .module('feinstaub', ['ngMaterial']);
 
 
@@ -230,12 +229,14 @@ function DialogCtrlInfo ($mdDialog) {
     
    function DialogCtrlSensor ($timeout, $q, $scope, $mdDialog) {
     var self = this;
-    
+           
     document.getElementById("twitter").disabled = true;
     document.getElementById("werte").disabled = true;   
     self.sensors  = arraySensors;
     self.querySearch   = querySearch;
+    var arrayID = arraySensors.map(function(item) {return item.display});
 
+       
     self.cancel = function($event) {
       $mdDialog.cancel();
     };
@@ -340,16 +341,19 @@ function DialogCtrlInfo ($mdDialog) {
     };
    };
     function querySearch (query) {
+        
       return query ? self.sensors.filter( createFilterFor(query) ) : self.sensors;
     }
 
     function createFilterFor(query) {
-      var stringQuery = query.toString();
-
-      return function filterFn(sensor) {
-        return (sensor.display.indexOf(stringQuery) === 0);
-      };
-
+      var stringQuery = query.toString(); 
+        var len = stringQuery.length;
+        
+        if (arrayID.indexOf(stringQuery) === -1){
+            return function filterFn(sensor) {return (sensor.display.indexOf(stringQuery) === 0)};
+        }else{
+            return function filterFn(sensor) {return (sensor.display.indexOf(stringQuery) === 0 && sensor.display.length === len)};      
+    };
     };
   }; 
     
