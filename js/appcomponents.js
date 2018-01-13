@@ -296,7 +296,7 @@ function DialogCtrlInfo ($mdDialog) {
 
         titre = "Temp. + Feucht. + Druck Sensor #"+ sensorStored.display;
         
-        content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + elementDruck[0].data.Press + "</td></tr></table>";
+        content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + parseInt(elementDruck[0].data.Press/100) + "</td></tr></table>";
     
         texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temp., " + elementTemp[0].data.Humi + " percent für die Feucht. und " + parseInt(elementDruck[0].data.Press/100) + " hPa für den Druck! %23luftdaten http://luftdaten.info";
         console.log(texte);
@@ -457,7 +457,7 @@ function DialogCtrlInfo ($mdDialog) {
 
         titre = "Temp. + Feucht. + Druck Sensor #"+ val.display;
         
-        content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + elementDruck[0].data.Press + "</td></tr></table>";
+        content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + parseInt(elementDruck[0].data.Press/100) + "</td></tr></table>";
     
         texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temp., " + elementTemp[0].data.Humi + " percent für die Feucht. und " + parseInt(elementDruck[0].data.Press/100) + " hPa für den Druck! %23luftdaten http://luftdaten.info";
         console.log(texte);
