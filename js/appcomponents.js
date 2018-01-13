@@ -211,9 +211,132 @@ function DialogCtrlInfo ($mdDialog) {
       app.controller('SensorCtrl', SensorCtrl);
 
   function SensorCtrl($mdDialog) {
+      
     var self = this;
-
     self.openDialog = function($event) {
+            
+            
+            
+               if( localStorage.getItem('mySensor')!= null) {
+                
+          console.log('data');
+                   
+                   
+               
+                   
+                   var sensorID = localStorage.getItem('mySensor');
+            
+            var sensorStored = arraySensors.find(function (i) { return i.id == sensorID; });
+                   
+            console.log(sensorStored);            
+            
+            map.setView(new L.LatLng(sensorStored.latitude, sensorStored.longitude), 17);  
+                
+    var elementPM = hmhexaPM.filter(item => item.id == sensorStored.id);
+    var elementTemp = hmhexatemp.filter(item => item.id == sensorStored.id);
+    var elementDruck = hmhexadruck.filter(item => item.id == sensorStored.id);
+    
+    var titre ="";
+    var content ="";
+              
+    var dialogDiv  = document.getElementsByClassName("map"); 
+    var rect = dialogDiv[0].getBoundingClientRect(); 
+    
+    var widthGraph = parseInt(rect.width);
+                
+    if (elementPM.length != 0){
+        
+        document.getElementById("hmPM10").disabled = false;
+        document.getElementById("hmPM2.5").disabled = false;
+        document.getElementById("hmtemp").disabled = true;
+        document.getElementById("hmhumi").disabled = true;
+        document.getElementById("hmdruck").disabled = true;
+        
+        reload("hmPM10");  
+        
+        titre = "Feinstaub Sensor #"+ sensorStored.display;
+        
+        content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'>";
+        
+                    
+    texte = "Mein Sensor zeigt gerade die Werte " + elementPM[0].data.PM10 + " μg/m³ für PM10 und "  + elementPM[0].data.PM25 + " μg/m³ für PM2.5! %23luftdaten http://luftdaten.info";
+                console.log(texte);
+                        
+    };
+        
+    if (elementTemp.length != 0 && elementDruck.length == 0 ){
+    
+        document.getElementById("hmPM10").disabled = true;
+        document.getElementById("hmPM2.5").disabled = true;
+        document.getElementById("hmtemp").disabled = false;
+        document.getElementById("hmhumi").disabled = false;
+        document.getElementById("hmdruck").disabled = true;
+        
+        reload("hmtemp");
+        
+        titre = "Temp. + Feucht. Sensor #"+ sensorStored.display;
+        
+         content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td></tr></table>";
+        
+        
+        texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temperatur und " + elementTemp[0].data.Humi + " percent für die Feuchtigkeit! %23luftdaten http://luftdaten.info";
+                console.log(texte);
+            
+    };
+        
+    if (elementTemp.length != 0 && elementDruck.length != 0){
+        
+        document.getElementById("hmPM10").disabled = true;
+        document.getElementById("hmPM2.5").disabled = true;
+        document.getElementById("hmtemp").disabled = false;
+        document.getElementById("hmhumi").disabled = false;
+        document.getElementById("hmdruck").disabled = false;
+        
+        reload("hmtemp");
+
+        titre = "Temp. + Feucht. + Druck Sensor #"+ sensorStored.display;
+        
+        content = "<table id='results'><tr><th class ='titre'>Temp.<br>&#8451;</th><th class ='titre'>Feucht.<br>%</th><th class ='titre'>Druck<br>hPa</th></tr><tr><td class='val1'>" +elementTemp[0].data.Temp +"</td><td class='val2'>" + elementTemp[0].data.Humi +"</td><td class='val3'>" + elementDruck[0].data.Druck + "</td></tr></table>";
+    
+        texte = "Mein Sensor hat die Werte " + elementTemp[0].data.Temp + "°C für die Temp., " + elementTemp[0].data.Humi + " percent für die Feucht. und " + parseInt(elementDruck[0].data.Press/100) + " hPa für den Druck! %23luftdaten http://luftdaten.info";
+        console.log(texte);
+        
+    };
+
+        document.getElementById("twitter").disabled = false; 
+        
+       var part1 = "<md-dialog aria-label='Werte'><md-toolbar><div class='md-toolbar-tools'><h2>";
+        var part2 = "</h2><span flex></span><md-button class='md-icon-button' ng-click='ctrl.cancel()'><md-icon md-svg-src='images/ic_close_24px.svg' aria-label='Close dialog'></md-icon></md-button></div></md-toolbar><md-dialog-content ng-cloak><div class='md-dialog-content'>";
+
+        var partfin = "</div></md-dialog-content></md-dialog>"
+        
+        dynamictemplate = part1+ titre + part2 + content + partfin;
+        document.getElementById("werte").disabled = false;   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+
+    
+    
+      }else{
+          
+          console.log('no data');     
       $mdDialog.show({
         controller: DialogCtrlSensor,
         controllerAs: 'ctrl',
@@ -222,13 +345,19 @@ function DialogCtrlInfo ($mdDialog) {
         targetEvent: $event,
         clickOutsideToClose:true
       })
-    }
+      
+        };
+      
+    };          
+    
   };
     
     
     
    function DialogCtrlSensor ($timeout, $q, $scope, $mdDialog) {
+              
     var self = this;
+       
            
     document.getElementById("twitter").disabled = true;
     document.getElementById("werte").disabled = true;   
@@ -247,6 +376,8 @@ function DialogCtrlInfo ($mdDialog) {
         
     $mdDialog.hide();
     map.setView(new L.LatLng(val.latitude, val.longitude), 17);  
+            
+            localStorage.setItem('mySensor', val.id);
         
         
 //        REVOIR ICI
@@ -262,8 +393,12 @@ function DialogCtrlInfo ($mdDialog) {
     var titre ="";
     var content ="";
               
-    var dialogDiv  = document.getElementsByClassName("md-dialog-content"); 
+//    var dialogDiv  = document.getElementsByClassName("md-dialog-content"); 
+//    var rect = dialogDiv[0].getBoundingClientRect(); 
+            
+            var dialogDiv  = document.getElementsByClassName("map"); 
     var rect = dialogDiv[0].getBoundingClientRect(); 
+            
     
     var widthGraph = parseInt(rect.width);
                 

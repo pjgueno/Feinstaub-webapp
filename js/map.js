@@ -96,7 +96,12 @@
         map.on('click', function() { 
         div.style("display", "none");
         });
+       
         
+        
+        
+        console.log(localStorage.getItem('mySensor'));
+        console.log(typeof localStorage.getItem('mySensor'));
         
     };
     

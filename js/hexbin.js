@@ -221,8 +221,28 @@ L.hexbinLayer = function(options) {
 
 function sensorNr(data){
         
-    if (data.length == 1){var texte = "Sensor #" +data[0].o.id;};
-    if (data.length > 1){var texte = data.length + " Sensors";};
+    if (data.length == 1){
+        
+        var texte ='<select name="sensor" size="1" onchange="storeDataSensor(this.value)"><option value="" disabled selected>1 Sensor</option><option value="'+data[0].o.id+'">Sensor #'+data[0].o.id+'</option></select>';
+
+    };
+    
+    
+    
+    
+    if (data.length > 1){
+        
+        var debut = '<select name="sensor" size="1" onchange="storeDataSensor(this.value)"><option value="" disabled selected>'+data.length +' Sensors</option>';
+        var milieu ='';
+        var fin ='</select>';
+        
+        data.forEach(function(i) {
+        milieu += '<option value="'+i.o.id+'">Sensor #'+i.o.id+'</option>';
+        });
+    
+    var texte = debut + milieu + fin;
+                     
+    };
     
     
        div.transition()		
@@ -234,4 +254,28 @@ function sensorNr(data){
                 
     
 };
+
+
+function storeDataSensor(data){
+    localStorage.setItem('mySensor', parseInt(data));  
+    
+    console.log(localStorage.getItem('mySensor'));
+};
+
+
+
+
+//<select name="year" size="1" onchange="dataload(this.value)">
+//<option value="" disabled selected>Select year</option>
+//<option value="0">all</option>
+//<option value="2013">2013</option>
+//<option value="2014">2014</option>
+//<option value="2015">2015</option>
+//<option value="2016">2016</option>
+//</select>
+
+
+
+
+
 
