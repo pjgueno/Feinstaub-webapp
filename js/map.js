@@ -15,7 +15,7 @@
     var options = {
                 valueDomain: [20, 40, 60, 100, 500],
                 colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
-                };;
+                };
 
 
    var div = d3.select("body").append("div")

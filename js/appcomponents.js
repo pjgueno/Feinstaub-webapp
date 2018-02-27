@@ -99,11 +99,13 @@ function DialogCtrlInfo ($mdDialog) {
         console.log(val);
         
     var getOptions = positions[val.loader];
+                    
+    console.log(getOptions);
+                    console.log(getOptions.bbox);
         
     $mdDialog.hide();
-        
-    map.setView(new L.LatLng(getOptions.coordinates[0], getOptions.coordinates[1]), getOptions.zoom);  
-        
+                    
+    map.fitBounds(getOptions.bbox);                  
                 
         document.getElementById("hmPM10").disabled = false;
         document.getElementById("hmPM2.5").disabled = false;
@@ -111,7 +113,7 @@ function DialogCtrlInfo ($mdDialog) {
         document.getElementById("hmhumi").disabled = false;
         
         
-    var meanMinMax = getMeans(map);
+    var meanMinMax = getMeans(getOptions.bbox);
         
     console.log(meanMinMax);
         
@@ -498,9 +500,11 @@ function twitter(txt){
 };
     
     
-function getMeans(map){
+function getMeans(bounds){
     
-  var bbox = map.getBounds();
+    console.log(bounds);
+    
+  var bbox = L.latLngBounds(bounds);
     
     console.log(bbox);
 

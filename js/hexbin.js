@@ -160,6 +160,10 @@ L.HexbinLayer = L.Layer.extend({
 		// exit
 		join.exit().remove()
         
+//        A VOIR SI PROBLEME;
+        
+//                d3.selectAll('path.hexbin-hexagon').remove()
+
 
 		// add the hexagons to the select
 		this._createHexagons(join, data, projection)
