@@ -266,20 +266,3 @@ function storeDataSensor(data){
     console.log(localStorage.getItem('mySensor'));
 };
 
-
-
-
-//<select name="year" size="1" onchange="dataload(this.value)">
-//<option value="" disabled selected>Select year</option>
-//<option value="0">all</option>
-//<option value="2013">2013</option>
-//<option value="2014">2014</option>
-//<option value="2015">2015</option>
-//<option value="2016">2016</option>
-//</select>
-
-
-
-
-
-

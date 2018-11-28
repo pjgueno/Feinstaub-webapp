@@ -1,8 +1,10 @@
     var hexagonheatmap;
     var hmhexaPM;
     var hmhexatemp;
+    var hmhexahumi;
     var hmhexadruck;
     var arraySensors;
+    var arraySensorsHumi;
     var arraySensorsDruck;
 
     var map;
@@ -44,31 +46,33 @@
     .awaitAll(ready); 
             
             console.log('reload')
-            
-            
            
     }, 300000);
 //            }, 5000);
 
  
-        map.on('moveend', function() { 
-            document.getElementById("twitter").disabled = true; 
-            document.getElementById("werte").disabled = true;  
+        map.on('moveend', function() {
+                   
             
-        hexagonheatmap._zoomChange();
+//            ON GARDE LES BOUTONS ACTIFS
+            
+//            document.getElementById("twitter").disabled = true; 
+//            document.getElementById("werte").disabled = true;              
+//            
+            hexagonheatmap._zoomChange();
             
 //            CHECK IF TYPE OF SENSOR IN NEW ZOOM
             
        var bbox = map.getBounds();
             
-            console.log(bbox);
-
+//            console.log(bbox);
 
             var inboundsPM = hmhexaPM.filter(function(item){
             var position = new L.LatLng(item.latitude, item.longitude);
             if (bbox.contains(position) == true){
                 document.getElementById("hmPM10").disabled = false;
-                document.getElementById("hmPM2.5").disabled = false;            };    
+                document.getElementById("hmPM2.5").disabled = false;            
+            };    
             });
 
 
@@ -76,9 +80,18 @@
             var position = new L.LatLng(item.latitude, item.longitude);
             if (bbox.contains(position) == true){
                 document.getElementById("hmtemp").disabled = false;
-                document.getElementById("hmhumi").disabled = false;            };    
+               };    
             });
 
+            
+            var inboundshumi = hmhexahumi.filter(function(item){
+            var position = new L.LatLng(item.latitude, item.longitude);
+            if (bbox.contains(position) == true){
+                document.getElementById("hmhumi").disabled = false;
+            };    
+            });
+            
+            
 
             var inboundsdruck = hmhexadruck.filter(function(item){
             var position = new L.LatLng(item.latitude, item.longitude);
@@ -97,11 +110,9 @@
         div.style("display", "none");
         });
        
-        
-        
-        
-        console.log(localStorage.getItem('mySensor'));
-        console.log(typeof localStorage.getItem('mySensor'));
+//        
+//        console.log(localStorage.getItem('mySensor'));
+//        console.log(typeof localStorage.getItem('mySensor'));
         
     };
     
@@ -121,12 +132,29 @@
       hmhexaPM = data[0].map(function(item){return {"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
       
       
-      hmhexatemp = data[1].map(function(item){return {"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature")) , "Humi": parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
+      hmhexatemp = data[1].map(function(item){return {"data":{"Temp": parseInt(getRightValue(item.sensordatavalues,"temperature"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude}});
 
       
+      hmhexahumi = data[1].reduce(function(filtered, item) {
+          
+          if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "DHT22") {
+              
+              filtered.push({"data":{"Humi":parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+              return filtered;
+            }, []);
+                
+//            console.log(hmhexahumi);
+
+      
+      
        hmhexadruck = data[1].reduce(function(filtered, item) {
-              if (item.sensordatavalues.length == 3) {
-                 filtered.push({"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+                             
+           
+//           if (item.sensordatavalues.length == 3) {
+           
+                 if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "BMP180" || item.sensor.sensor_type.name == "BMP280" ) {
+                         
+                 filtered.push({"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
               return filtered;
             }, []);
       
@@ -134,24 +162,47 @@
       
       
       var tab1 = data[0].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"PM"}});
-      var tab2 = data[1].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"TH"}});
+      var tab2 = data[1].map(function(item){return {"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"THD"}});
        
      
       arraySensors = tab1.concat(tab2);
       arraySensors.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
-
+      
+      
+      
+      
+        arraySensorsHumi = data[1].reduce(function(filtered, item) {
+            
+            
+            if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "DHT22") {
+              
+              
+             filtered.push({"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"H"});
+          }
+          return filtered;
+        }, []);
+      
+      arraySensorsHumi.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
+      
       
         arraySensorsDruck = data[1].reduce(function(filtered, item) {
-          if (item.sensordatavalues.length == 3) {
+            
+            
+//          if (item.sensordatavalues.length == 3) {
+              
+              if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "BMP180" || item.sensor.sensor_type.name == "BMP280" ) {
+              
+              
              filtered.push({"id":item.sensor.id, "display":item.sensor.id.toString(), "latitude":item.location.latitude,"longitude":item.location.longitude,"type":"P"});
           }
           return filtered;
         }, []);
-      arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
       
+      arraySensorsDruck.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);});
 
       if(selector == "hmPM10" || selector == "hmPM2.5") {makeHexagonmap(hmhexaPM);};      
-      if(selector == "hmtemp" || selector == "hmhumi"){makeHexagonmap(hmhexatemp);};
+      if(selector == "hmtemp"){makeHexagonmap(hmhexatemp);};
+      if(selector == "hmhumi"){makeHexagonmap(hmhexahumi);};
       if(selector == "hmdruck" ){makeHexagonmap(hmhexadruck);};
         
  };      
@@ -264,7 +315,7 @@ function makeHexagonmap(data){
             };
             
              hexagonheatmap.initialize(options);
-                hexagonheatmap.data(hmhexatemp);
+                hexagonheatmap.data(hmhexahumi);
             };
     
      if(selector == "hmdruck" ){
