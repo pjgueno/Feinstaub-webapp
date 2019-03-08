@@ -278,7 +278,22 @@ function DialogCtrlInfo ($mdDialog) {
         
         titre = "Feinstaub Sensor #"+ sensorStored.display;
         
-        content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'>";
+//        content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+sensorStored.display+"'>";
+        
+        
+          
+         content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=1&var-node="+sensorStored.display+"' width='"+widthGraph+"' height='200' frameborder='0'></iframe><br><br><iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node="+sensorStored.display+"' width='"+widthGraph+"' height='200' frameborder='0'></iframe>";
+        
+        
+        
+          
+//        <iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=1&var-node=' width='290' height='200' frameborder='0'></iframe>
+//        
+//<iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node=' width='290' height='200' frameborder='0'></iframe>
+//        
+//        
+        
+        
         
                     
     texte = "Mein Sensor zeigt gerade die Werte " + elementPM[0].data.PM10 + " μg/m³ für PM10 und "  + elementPM[0].data.PM25 + " μg/m³ für PM2.5! %23luftdaten http://luftdaten.info";
@@ -438,7 +453,12 @@ function DialogCtrlInfo ($mdDialog) {
         
         titre = "Feinstaub Sensor #"+ val.display;
         
-        content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'>";
+//        content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?panelId=1&amp;orgId=1&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'><br><br><img src='https://api.luftdaten.info/grafana/render/dashboard-solo/db/single-sensor-view?orgId=1&amp;panelId=2&amp;width="+ widthGraph +"&amp;height=200&amp;tz=UTC%2B02%3A00&amp;var-node="+val.display+"'>";
+        
+        
+        
+         content = "<table id='results'><tr><th class ='titre'>PM10<br>&micro;g/m&sup3;</th><th class ='titre'>PM2.5<br>&micro;g/m&sup3;</th></tr><tr><td class='val1'>" +elementPM[0].data.PM10 +"</td><td class='val2'>" + elementPM[0].data.PM25 +"</td></tr></table></br><iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=1&var-node="+val.display+"' width='"+widthGraph+"' height='200' frameborder='0'></iframe><br><br><iframe src='https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node="+val.display+"' width='"+widthGraph+"' height='200' frameborder='0'></iframe>";
+        
         
                     
     texte = "Mein Sensor zeigt gerade die Werte " + elementPM[0].data.PM10 + " μg/m³ für PM10 und "  + elementPM[0].data.PM25 + " μg/m³ für PM2.5! %23luftdaten http://luftdaten.info";

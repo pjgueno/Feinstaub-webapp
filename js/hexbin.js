@@ -15,11 +15,17 @@ L.HexbinLayer = L.Layer.extend({
 			return d.latitude
 		},
 		value: function (d) {
-            if (selector == "hmPM10"){return d3.mean(d, (o) => o.o.data.PM10)}
-            if (selector == "hmPM2.5"){return d3.mean(d, (o) => o.o.data.PM25)} 
-            if (selector == "hmtemp"){return d3.mean(d, (o) => o.o.data.Temp)} 
-            if (selector == "hmhumi"){return d3.mean(d, (o) => o.o.data.Humi)} 
-            if (selector == "hmdruck"){return d3.mean(d, (o) => o.o.data.Press)} 
+            
+                        //            Median everywhere!
+
+            
+            if (selector == "hmPM10"){return d3.median(d, (o) => o.o.data.PM10)}
+            if (selector == "hmPM2.5"){return d3.median(d, (o) => o.o.data.PM25)} 
+            if (selector == "hmtemp"){return d3.median(d, (o) => o.o.data.Temp)} 
+            if (selector == "hmhumi"){return d3.median(d, (o) => o.o.data.Humi)} 
+            if (selector == "hmdruck"){return d3.median(d, (o) => o.o.data.Press)} 
+            
+            
 		}
 	},
 
@@ -30,6 +36,16 @@ L.HexbinLayer = L.Layer.extend({
 			.domain(this.options.valueDomain)
 			.range(this.options.colorRange)
 			.clamp(true)
+	},
+    
+    getFlexRadius () {
+		if (this.map.getZoom() < 3) {
+			return this.options.radius / (3 * (4 - this.map.getZoom()))
+		} else if (this.map.getZoom() > 2 && this.map.getZoom() < 8) {
+			return this.options.radius / (9 - this.map.getZoom())
+		} else {
+			return this.options.radius
+		}
 	},
 
 	onAdd (map) {
@@ -175,6 +191,10 @@ L.HexbinLayer = L.Layer.extend({
         
 		let hexbin = d3.hexbin()
 			.radius(this.options.radius / projection.scale)
+            
+//        ligne ajoutée pour flex radius
+        
+            .radius(this.getFlexRadius() / projection.scale)
 			.x( (d) => d.point.x )
 			.y( (d) => d.point.y )
 		let bins = hexbin(data)
